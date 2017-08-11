@@ -4,13 +4,13 @@ import json
 import dbscan
 
 # data is just a list of [x,y]
-data = [[629.1, 187.4], [636.5, 73.7], [474.4, 300.0], [541.7, 476.9], [544.9, 471.6],
-        [529.1, 494.8], [533.8, 473.2], [508.0, 362.1], [485.9, 246.3], [484.9, 251.6],
-        [370.1, 253.7], [604.7, 271.6], [607.0, 288.4], [603.8, 297.9], [719.6, 333.7]]
+data = [(629.1, 187.4), [636.5, 73.7], [474.4, 300.0], [541.7, 476.9], [544.9, 471.6],
+        [529.1, 494.8, 'label'], (533.8, 473.2), [508.0, 362.1, 'label'], [485.9, 246.3], [484.9, 251.6],
+        [370.1, 253.7], [604.7, 271.6], (607.0, 288.4), [603.8, 297.9], [719.6, 333.7]]
 
 # determine a suitable eps and min_points
 eps = 30
-min_points = 2
+min_points = 3
 print('epsilon =', eps, '  min_points =', min_points)
 # and plug into a module containing an instance of class DBSCAN:
 scan = dbscan.DBSCAN(eps, min_points)
