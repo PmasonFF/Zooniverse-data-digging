@@ -13,7 +13,7 @@ The following modules or blocks are planned:
 #### 1) The basic framework with ability to Slice the Classification file in various ways to select the pertinent records.
 This will provide the framework the other blocks will be added onto. By itself it can be used to slice the Classification file based on various conditional clauses using specificed fields in the classification records.
 
-#### 2) General utility blocks to provide: 
+#### 2) General utility blocks to provide some simple functions that make the output file more useful: 
 These are available now in some form, they will be generalized and added asap.
   -	user_name This block replaces not-logged-in user_name based on an external picklist prepared elsewhere and keyed off user_ip.  The scripts to generate a picklist can use ip or browser data to group the not-logged-in users.
   -	image_number This block attempts to get subject image metadata from the subject_data field and generate a image identifier that may be more significant to the project owner. Alternately a cross-reference csv file can be provided - subject_id:image_number. The image_number will be a field in the output file to aid analysis.
