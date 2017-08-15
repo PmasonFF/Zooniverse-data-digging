@@ -1,5 +1,7 @@
 This is an attempt to open a repository of the scripts I have written for various zooniverse projects.
 It is a work in progress.
+These scripts are written in Python 3.6.2.  They use as few additional packages as possible - the goal is to be able to run them with an out-of-the box Python set-up.  This is not always possible (eg plotting); in those cases I will provide a complete list of the required dependencies.  
+I am not a professional coder - I deliberately use simple explicit code to make these scripts as easy to undersatnd and modify as possible - the goal is that they are useable by someone with minimal coding experience. To use most of them one needs to be able to follow some (hopefully) simple instructions.  These will include copying and pasting defined blocks of code, commenting out or "uncommenting" various lines of code, modifing some specified strings/and or variable names, and running the result in a python interpreter. Between the instructions, comments in the code, and the example demos someone with minimal coding experience (like me) should be able to extract their zooniverse data in a useable form from projects built with the standard project builder.
 
 ## DBSCAN clustering script
 
@@ -8,10 +10,10 @@ This DBSCAN clustering algorithm is intended for data sets which are limited to 
 
 ## Flatten classification file building blocks
 
-The next group of scripts is my approach to the problem of flattening the JSON formatted strings in the Zooniverse classification download.  This is directed at project owners with little IT support using the project builder to create their project. Like the project builder the effort is made up of a basic framework on which blocks are added - basically the correct blocks are added to handle the output from each particular task in the project. Each block of code must be slightly modified in a easy to understand way to match the project's task labels so the output data is labeled in a way the project owner expects.
+This group of scripts is my approach to the problem of flattening (ie simplifying and breaking apart) the JSON formatted strings in the Zooniverse classification download.  This is directed at project owners with little IT support using the project builder to create their project. Like the project builder the effort is made up of a basic framework on which blocks are added - basically the correct blocks are added to handle the output from each particular task in the project. Each block of code must be slightly modified in a easy to understand way to match the project's task labels so the output data is labeled in a way the project owner expects.
 The following modules or blocks are planned:
 #### 1) The basic framework with ability to Slice the Classification file in various ways to select the pertinent records.
-This will provide the framework the other blocks will be added onto. By itself it can be used to slice the Classification file based on various conditional clauses using specificed fields in the classification records.
+This will provide the framework the other blocks will be added onto. By itself it can be used to slice (ie to select specific records) the Classification file based on various conditional clauses using specificed fields in the classification records.
 
 #### 2) General utility blocks to provide some simple functions that make the output file more useful: 
 These are available now in some form, they will be generalized and added asap.
