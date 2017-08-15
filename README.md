@@ -18,7 +18,7 @@ This will provide the framework the other blocks will be added onto. By itself i
 #### 2) General utility blocks to provide some simple functions that make the output file more useful: 
 These are available now in some form, they will be generalized and added asap.
   -	user_name This block replaces not-logged-in user_name based on an external picklist prepared elsewhere and keyed off user_ip.  The scripts to generate a picklist can use ip or browser data to group the not-logged-in users.
-  -	image_number This block attempts to get subject image metadata from the subject_data field and generate a image identifier that may be more significant to the project owner. Alternately a cross-reference csv file can be provided - subject_id:image_number. The image_number will be a field in the output file to aid analysis.
+  -	image_number This block attempts to get subject image metadata from the subject_data field and generate a image identifier that may be more significant to the project owner. Alternately a cross-reference csv file can be provided - subject_id : image_number. The image_number will be a field in the output file to aid analysis.
   -	elapsed_time This block pulls the started and finished times from the metadata field and calculates the elapsed time the user spent on the classification.
   -	image_size This block attempts to pull the natural height and width for the subject image from the metadata file. This can be used for various scaling operations for plotting, clustering or for testing out-of-bounds drawing tools.
 
