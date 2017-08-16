@@ -7,7 +7,7 @@
  4) The output file field names and the writer line have been simplified by eliminating many of the fields
  that were not required to give us the info we wanted which was to determine if the retirement limit was
  met for these two subject numbers for a specific workflow (The output file showed that they were. -
- gold standard classifcations done under a different workflow did NOT reduce the regular classification limit)"""
+ gold standard classifications done under a different workflow did NOT reduce the regular classification limit)"""
 
 import csv
 import json
