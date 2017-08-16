@@ -12,8 +12,7 @@ It is useful for aggregating the user data for various drawing tools (points cir
 
 This group of scripts is my approach to the problem of flattening (ie simplifying and breaking apart) the JSON formatted strings in the Zooniverse classification download.  This is directed at project owners with little IT support using the project builder to create their project. Like the project builder the effort is made up of a basic framework on which blocks are added - basically the correct blocks are added to handle the output from each particular task in the project. Each block of code must be slightly modified in a easy to understand way to match the project's task labels so the output data is labeled in a way the project owner expects.
 The following modules or blocks are planned:
-#### 1) The basic framework with ability to Slice the Classification file in various ways to select the pertinent records.
-Completed, with slicing demo and readme.
+#### 1) The basic framework with ability to Slice the Classification file in various ways to select the pertinent records. Completed, with slicing demo and readme.
 This will provide the framework the other blocks will be added onto. By itself it can be used to slice (ie to select specific records) the Classification file based on various conditional clauses using specificed fields in the classification records.
 
 #### 2) General utility blocks to provide some simple functions that make the output file more useful: 
