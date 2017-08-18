@@ -6,7 +6,7 @@ from datetime import datetime
 csv.field_size_limit(sys.maxsize)
 # file location area:
 location = r'C:\py\FFClass\fossil-finder-classifications_test.csv'
-out_location = r'C:\py\Data_digging\flatten_classification_general_utilities-demo.csv'
+out_location = r'C:\py\Data_digging\flatten_classification_general_utilities_demo.csv'
 name_location = r'C:\py\FFIPusers\IPuser.csv'
 image_location = r'C:\py\FFSubject\subject_image_name_mini.csv'
 
