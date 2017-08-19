@@ -15,10 +15,9 @@ The following modules or blocks are planned:
 #### 1) The basic framework with ability to Slice the Classification file in various ways to select the pertinent records. Completed, with slicing demo and readme.
 This will provide the framework the other blocks will be added onto. By itself it can be used to slice (ie to select specific records) the Classification file based on various conditional clauses using specificed fields in the classification records.
 
-#### 2) General utility blocks to provide some simple functions that make the output file more useful: 
-These are available now in some form, they will be generalized and added asap.
+#### 2) General utility blocks to provide some simple functions that make the output file more useful: Completed, with two demos and readme. 
   -	user_name This block replaces not-logged-in user_name based on an external picklist prepared elsewhere and keyed off user_ip.  The scripts to generate a picklist can use ip or browser data to group the not-logged-in users.
-  -	image_number This block attempts to get subject image metadata from the subject_data field and generate a image identifier that may be more significant to the project owner. Alternately a cross-reference csv file can be provided - subject_id : image_number. The image_number will be a field in the output file to aid analysis.
+  -	image_number These blocks attempt to get subject image metadata from the subject_data field and generate a image identifier that may be more significant to the project owner or alternately, merge a cross-reference csv file into the flattened output file. The cross reference file is generated elsewhere and could have additional fields such as geo-references. The image_number (and possibly other info) will be (a) field(s) in the output file to aid analysis.
   -	elapsed_time This block pulls the started and finished times from the metadata field and calculates the elapsed time the user spent on the classification.
   -	image_size This block attempts to pull the natural height and width for the subject image from the metadata file. This can be used for various scaling operations for plotting, clustering or for testing out-of-bounds drawing tools.
 
