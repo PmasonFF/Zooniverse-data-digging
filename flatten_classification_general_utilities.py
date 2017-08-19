@@ -16,6 +16,8 @@ def load_pick_ip():
         ipdict = csv.DictReader(name)
         assigned_name = {}
         for ipline in ipdict:
+            # NOTE! This code assumes the external picklist is a csv file with two fields 'user_ip' and
+            # 'assigned_name'. If the field names are different the following line must be modified to match them:
             assigned_name[str(ipline['user_ip'])] = ipline['assigned_name']
         return assigned_name
     # Third, place this statement in the block which initializes i and j prior to entering the loop
@@ -52,6 +54,8 @@ def load_pick_image():
         subject_dict = csv.DictReader(image)
         assigned_number = {}
         for subject_line in subject_dict:
+            # NOTE! This code assumes the external picklist is a csv file with two fields 'subject_ids' and 
+            # 'image_number'. If the field are different the following line must be modified to match them:
             assigned_number[str(subject_line['subject_ids'])] = subject_line['image_number']
         return assigned_number
     # Third, place these two statements in the block which initializes i and j prior to entering the loop
