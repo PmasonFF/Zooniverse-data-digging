@@ -22,17 +22,17 @@ This will provide the framework the other blocks will be added onto. By itself i
   -	image_size This block attempts to pull the natural height and width for the subject image from the metadata file. This can be used for various scaling operations for plotting, clustering or for testing out-of-bounds drawing tools.
 
 #### 3) Task specific blocks that handle the various task types allowed by the project builder.  The following blocks are planned. Those with an asterix are written and working in some form:
-- *Question with single answer
-- *Question with Multiple answers 
+- Question with single answer (Complete)
+- Question with Multiple answers (Complete)
 - *Drawing tool - Point
-- Drawing tool - Line
+- *Drawing tool - Line
 - *Drawing tool - Circle
-- Drawing tool - Box (rectangle and column)
-- Drawing tool - Triangle
+- *Drawing tool - Box (rectangle and column)
+- *Drawing tool - Triangle
 - Drawing tool - Polygon
-- Drawing tool - Elipse
+- *Drawing tool - Elipse
 - Drawing tool - Bezier
-- Transcription - single field
+- *Transcription - single field
 - Transcriptiion - drop-down
 - Transcription - multiple fields
 - Survey - 2D (choice and howmany) full array
