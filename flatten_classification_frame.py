@@ -38,7 +38,7 @@ def include(class_record):
     else:
         return False
 
-    if class_record['workflow_version'] >= str(001.01):
+    if float(class_record['workflow_version']) >= 001.01:
         pass  # replace '001.01' with first version of the workflow to include.
     else:
         return False
