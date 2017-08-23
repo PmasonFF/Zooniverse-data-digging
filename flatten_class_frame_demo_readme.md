@@ -1,6 +1,6 @@
-This script is a demo for the flatten_classification_frame where it is used to slice out (or select) two specific subject numbers for the Aerobotany classification download.
+This script is a demo for the flatten_class_frame where it is used to slice out (or select) two specific subject numbers for the Aerobotany classification download.
 
-This script demonstrates shows the basic script flatten_classification_frame.py modified in four ways:
+This script demonstrates shows the basic script flatten_class_frame.py modified in four ways:
  1) The actual path and file names were modified to match the files on my drive. You would have to modify these to match your file locations, and chose your own name for the output file based on what you are doing.
  2) The comment lines have been stripped out - This script is actually fairly short! This is not necessary but shows how the script can be simplified.  
  3) Unused slice conditions have been deleted except for one we want which selects only two subject_ids.  Alternately the unused code could be left in place and “#” characters placed before each line (this is known as “commenting out” sections of code).
