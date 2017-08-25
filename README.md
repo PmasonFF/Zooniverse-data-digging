@@ -24,15 +24,16 @@ This will provide the framework the other blocks will be added onto. By itself i
 #### 3) Task specific blocks that handle the various task types allowed by the project builder.  The following blocks are planned. Those with an asterix are written and working in some form:
 - Question with single answer (Complete)
 - Question with Multiple answers (Complete)
-- *Drawing tool - Point
-- *Drawing tool - Line
-- *Drawing tool - Circle
-- *Drawing tool - Box (rectangle and column)
-- *Drawing tool - Triangle
+- Drawing tool - Point (Complete)
+- Drawing tool - Line (Complete)
+- Drawing tool - Circle (Complete)
+- Drawing tool - Rectangle(Complete)
+- Drawing tool - Column (Complete) 
+- Drawing tool - Triangle (Complete)
 - Drawing tool - Polygon
-- *Drawing tool - Elipse
+- Drawing tool - Ellipse (Complete)
 - Drawing tool - Bezier
-- *Transcription - single field
+- *Transcription - single field*
 - Transcriptiion - drop-down
 - Transcription - multiple fields
 - Survey - 2D (choice and howmany) full array
@@ -41,11 +42,11 @@ This will provide the framework the other blocks will be added onto. By itself i
 - Survey - 3D non-zero elements only_
 
 #### 4) Test blocks which will preform simple tests on the output from one or more of the blocks listed in 3):
--	*Test points from point drawing tools lay within the image_size (ie no out-of-bounds points.)
--	*Test circle centers are within a fixed percentage of the circle radius of an image edge (ie part of the circle lies within the image.)
--	*Test that no two points of the same type are placed within a distance “eps” of each other on the same subject by the same classifier (ie test for double clicks)
--	*As for above except for circle centres.
--	*Test the radius of a circle is within a range specified (relative to the image_size)
+- \*Test points from point drawing tools lay within the image_size (ie no out-of-bounds points.)
+-	\*Test circle centers are within a fixed percentage of the circle radius of an image edge (ie part of the circle lies within the image.)
+-	\*Test that no two points of the same type are placed within a distance “eps” of each other on the same subject by the same classifier (ie test for double clicks)
+-	\*As for above except for circle centres.
+-	\*Test the radius of a circle is within a range specified (relative to the image_size)
 -	Test the duration is consistent with a human classifier.
 
 
