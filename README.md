@@ -24,20 +24,13 @@ This will provide the framework the other blocks will be added onto. By itself i
 #### 3) Task specific blocks that handle the various task types allowed by the project builder.  The following blocks are planned. Those with an asterix are written and working in some form:
 - Question with single answer (Complete)
 - Question with Multiple answers (Complete)
-- Drawing tool - Point (Complete)
-- Drawing tool - Line (Complete)
-- Drawing tool - Circle (Complete)
-- Drawing tool - Rectangle(Complete)
-- Drawing tool - Column (Complete) 
-- Drawing tool - Triangle (Complete)
-- Drawing tool - Polygon
-- Drawing tool - Ellipse (Complete)
-- Drawing tool - Bezier
+- Drawing tool - Single tool type, no sub-tasks (Complete)
+- Drawing tool - Sub-tasks (Complete)
+- Drawing tool - Multiple tool types in one task (Complete)
 - *Transcription - single field*
-- Transcriptiion - drop-down
-- Transcription - multiple fields
-- Survey - 2D (choice and howmany) full array
-- Survey - 3D (choice, howmany, behaviour) full array
+- *Transcription - Highlight and transcribe*
+- Survey - 2D (choice and how many) full array
+- Survey - 3D (choice, how many, behaviour) full array
 - Survey - 2D non-zero elements only
 - Survey - 3D non-zero elements only_
 
