@@ -54,7 +54,7 @@ can complicate the 'details' section.
      "tool_label":"ellipse one"} where (x, y) is the centre of the ellipse, rx is the first axis drawn out
      and ry is the second axis set by default or later adjusted, and the angle is from the x axis to rx positive ccw.
      
-  Polygon:,{"tool":3,"frame":0,"closed":true,"points":[{"x":375....,"y":272....},{"x":513....,"y":272....},
+ Polygon:{"tool":3,"frame":0,"closed":true,"points":[{"x":375....,"y":272....},{"x":513....,"y":272....},
      {"x":534....,"y":372...},{"x":461...,"y":408....},{"x":371....,"y":356....}],"details":[],"tool_label":"polygon"}
      where the list of points are the vertices. Polygons can be drawn open or closed - the point list does not change.
 
