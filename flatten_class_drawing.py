@@ -197,6 +197,7 @@ can complicate the 'details' section.
         #  the values drawings_X_N.  Each task and tool number will have a separate field name and column
         #  with a list of all the drawing objects for that task and tool number as the data in the field.
     # Third copy the function definitions for the tool type(s) you need to the definition section of frame.py
+    
 
 def pull_point(drawn_object, task_label):
     x = round(drawn_object['x'], 0)
@@ -372,7 +373,6 @@ def pull_bezier(drawn_object, task_label):
                                     #  will likely require reconstructing the bezier curve in a functional form y = f(x) 
                                     #  from these defining points. See above for how the points are ordered.
                                     drawings_1_B.append(pull_bezier(drawing_object, task_label_1))
-
 
                     except KeyError:
                         continue
