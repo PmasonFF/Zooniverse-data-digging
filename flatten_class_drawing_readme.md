@@ -44,24 +44,24 @@ For the simple drawing tools without sub-tasks this is pretty simple, especially
      where the list of points are the vertices. Polygons can be drawn open or closed - the point list does not change.
 
  Bezier:{"tool":2,"frame":0,"closed":false,"points":\[{"x":480....,"y":262....},{"x":464.....,"y":23....},
-     {"x":704.,"y":121.}],"details":\[],"tool_label":"bezier"} where the 1st, 3rd,5th etc points are the vertices
+     {"x":704.,"y":121.}],"details":\[],"tool_label":"bezier"} where the 1st, 3rd, 5th etc points are the vertices
      and the 2nd, 4th etc are the points drawn out to form the curves.  Bezier curves can be drawn open
-     (total number of points is odd) or closed (always an even number of points)."""
+     (total number of points is odd) or closed (always an even number of points).
 
 ### Dealing with sub-tasks
 
-In the "drawing_made" dictionaries described above, there is a key 'details' which is where the values entered by the user for any drawing sub-tasks are found. They are of the form "details:[{"value":1},{"value":[1,2,6]},{"value":"8.4"},{"value":"equidem gloriatu"}]"  Note there are no labels! just the value elements in order of the sub-tasks that were defined, one for each sub-task defined (even if not used for that particular drawing. This is important because we must rely on the order to decode multiple sub-tasks.
+In the "drawing_made" dictionaries described above, there is a key 'details' which is where the values entered by the user for any drawing sub-tasks are found. They are of the form "details:\[{"value":1},{"value":\[1,2,6]},{"value":"8.4"},{"value":"equidem gloriatu"}]"  Note there are no labels! just the value elements in order of the sub-tasks that were defined, one for each sub-task defined (even if not used for that particular drawing. This is important because we must rely on the order to decode multiple sub-tasks.
 In this example:
 
 {"value":1} is the element for a single Required (radio button) question where 0 means the first possible answer is selected, while 1, 2 etc are the other possible choices in order in the project's sub-task menu.
 
-{"value":[1,2,6]} is the element for the second sub-task which is a multiple-allowed answer question. These return values as lists of the choices made, again starting at 0, in order.  No choices appears as []
+{"value":\[1,2,6]} is the element for the second sub-task which is a multiple-allowed answer question. These return values as lists of the choices made, again starting at 0, in order.  No choices appears as \[]
 
 {"value":"8.4"}  is typical of the output for a slider type sub-task. Depending on the range and step size this can look like values for single questions except for the quotes.
 
 {"value":"text string"} is typical structure for a transcription sub-task.
 
-Usually there is only one or two sub-tasks for a particular drawing tool. Since we know our project we can force the values into an ordered list which we can tack onto each drawing (point, circle, etc) - a "point" becomes [x, y, 'label', list of sub-task values]. Note the sub-tasks are associated with a specific drawing, we can not split them off into additional columns - to make sense they have to stay with their drawing.
+Usually there is only one or two sub-tasks for a particular drawing tool. Since we know our project we can force the values into an ordered list which we can tack onto each drawing (point, circle, etc) - a "point" becomes \[x, y, 'label', list of sub-task values]. Note the sub-tasks are associated with a specific drawing, we can not split them off into additional columns - to make sense they have to stay with their drawing.
 
 The crudest but simplest way we can do this is to change the append lines in the Block 1 to
 
@@ -69,13 +69,13 @@ The crudest but simplest way we can do this is to change the append lines in the
 
 If we do this,  each circle will appear like
 
-[345.0, 567.0, 65.0, ‘c’,[{"value":[1]},{"value":"8.4"}]] 
+\[345.0, 567.0, 65.0, ‘c’,\[{"value":\[1]},{"value":"8.4"}]] 
 
-where we have two sub_tasks, a question and a slider.  We could make this neater:
+where we have two sub_tasks, a question and a slider.  We could make this neater if we convert the dictionaries to a simple list with a list comprehension.:
 
-[345, 567, 65, ‘c’, [[1], "8.4"]]
+\[345, 567, 65, ‘c’, \[\[1], "8.4"]]
 
-if we convert the dictionaries to a simple list with a list comprehension.
+
 
 ### Code blocks in flatten_class_drawing.py
 
@@ -84,7 +84,7 @@ if we convert the dictionaries to a simple list with a list comprehension.
 The following block returns the drawing tool data for one drawing task which uses several tools of the **same** drawing type (eg colours of points representing different things, or rectangles of different colours to mark different blocks of text etc).
 
 
-**Block 2 Adds subtasks to Block 1.**
+**Block 2 Adds sub-tasks to Block 1.**
 
 
 **Block 3 More drawing tools: Line(s), Rectangle, Column, Triangle, Ellipse, Polygon, Bezier curve - Mixed tool types in a task.**
