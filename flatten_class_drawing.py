@@ -33,7 +33,7 @@ can complicate the 'details' section.
  Line:{"x1":681...,"x2":626....,"y1":132....,"y2":209....,"tool":0,"frame":0,"details":[],"tool_label":"line one"}
      where (x1,y1) is the first point set and (x2, y2) is the drawn out point.
      
- Vert_line:{"x":354.....,"tool":1,"frame":0,"details":[],"tool_label":"full height line"} where x is thelocation
+ Vert_line:{"x":354.....,"tool":1,"frame":0,"details":[],"tool_label":"full height line"} where x is the location
       of the vertical full height line.
 
  Horz_line:{"y":144.37255859375,"tool":0,"frame":0,"details":[],"tool_label":"full width line"} where y is
@@ -299,7 +299,7 @@ def pull_ellipse(drawn_object, task_label):
 def pull_polygon(drawn_object, task_label):
     points = [[round(item['x'], 0), round(item['y'], 0)] for item in drawn_object['points']]
     if not drawn_object['closed']:
-        closed = 0
+        closed = 0  #  Closed = 0, polygon is open, closed = 1 polygon is closed (or auto-closed)
     else: closed = 1
     detail = [item['value'] for item in drawn_object['details']]
     drawing = [points, closed, task_label, detail]
@@ -309,7 +309,7 @@ def pull_polygon(drawn_object, task_label):
 def pull_bezier(drawn_object, task_label):
     points = [[round(item['x'], 0), round(item['y'], 0)] for item in drawn_object['points']]
     if not drawn_object['closed']:
-        closed = 0
+        closed = 0  #  Closed = 0, polygon is open, closed = 1 polygon is closed (or auto-closed)
     else: closed = 1
     detail = [item['value'] for item in drawn_object['details']]
     drawing = [points, closed, task_label, detail]
