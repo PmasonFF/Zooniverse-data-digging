@@ -5,32 +5,48 @@ The form of the individual dictionaries for the tasks depends very much on what 
 
 The annotations dictionary element for a drawing task has the form:
 
-{"task":"TX", "task_label":"drawing instructions the users saw", "value":[list of drawings_made for that task]}.
+{"task":"TX", "task_label":"drawing instructions the users saw", "value":\[list of drawings_made for that task]}.
 
 The form of each "drawing_made" varies slightly depending what drawing tool type was used. In general they have the form:
 
-{dictionary elements defining the drawing,"tool":a number defining which tool was selected,"frame":0,"details":["subtask values"],"tool_label":"text for that tool from the project"}.
+{dictionary elements defining the drawing,"tool":a number defining which tool was selected,"frame":0,"details":\["subtask values"],"tool_label":"text for that tool from the project"}.
 
 Just as for questions, we use the knowledge we have of the specific project to parse out the info we want. Often different drawing tools can be analysed separately, and the classification file is flattened to several output files with the data for only certain tasks included.  Example: for Fossil Finder one might analyse tooth and bone separately from tools or shells.
 For the simple drawing tools without sub-tasks this is pretty simple, especially if one knows which of the blocks in annotations we are dealing with. Some of the drawing tools are more complex and multiple sub-tasks can complicate the 'details' section.
 
  ### Format of the drawing_object for the various drawing tools types:
 
- Point:{"x":161....,"y":203....,"tool":5,"frame":0,"details":[],"tool_label":"point one"} where the origin (0,0) is the top left corner of the image with x increasing to the right and y increasing down, units are pixels of the subject image.
+ Point:{"x":161....,"y":203....,"tool":5,"frame":0,"details":\[],"tool_label":"point one"} where the origin (0,0) is the top left corner of the image with x increasing to the right and y increasing down, units are pixels of the subject image.
 
- Circle:{"x":625....,"y":238....,"r":65...."tool":5,"frame":0,"details":[],"tool_label":"circle one"} where (x, y) is the centre of the circle and r the radius in pixels. Note drawings can be "picked up" and moved so x and y can be negative in some cases!
+ Circle:{"x":625....,"y":238....,"r":65...."tool":5,"frame":0,"details":\[],"tool_label":"circle one"} where (x, y) is the centre of the circle and r the radius in pixels. Note drawings can be "picked up" and moved so x and y can be negative in some cases!
 
- Line:{"x1":681...,"x2":626....,"y1":132....,"y2":209....,"tool":0,"frame":0,"details":[],"tool_label":"line one"} where (x1,y1)   is the first point set and (x2, y2) is the drawn out point.
+ Line:{"x1":681...,"x2":626....,"y1":132....,"y2":209....,"tool":0,"frame":0,"details":\[],"tool_label":"line one"} where (x1,y1)   is the first point set and (x2, y2) is the drawn out point.
+ 
+ Vert_line:{"x":354.....,"tool":1,"frame":0,"details":\[],"tool_label":"full height line"} where x is thelocation
+ of the vertical full height line.
 
- Rectangle:{"x":335..,"y":88...,"tool":1,"frame":0,"width":168...,"height":66...,"details":[], "tool_label":"box one"} where (x, y) is the upper left corner.
+ Horz_line:{"y":144.37255859375,"tool":0,"frame":0,"details":\[],"tool_label":"full width line"} where y is
+ the location of the horizontal full width line.
 
- Column:{"0":0,"x":559....,"tool":2,"frame":0,"width":45...,"details":[],"tool_label"
+
+ Rectangle:{"x":335..,"y":88...,"tool":1,"frame":0,"width":168...,"height":66...,"details":\[], "tool_label":"box one"} where (x,  y) is the upper left corner.
+
+ Column:{"0":0,"x":559....,"tool":2,"frame":0,"width":45...,"details":\[],"tool_label"
 :"column one"} where x is the start location of the left side of the column.
 
- Triangle:{"r":66...,"x":467...,"y":284...,"tool":3,"angle":-36...,"frame":0,"details":[],
+ Triangle:{"r":66...,"x":467...,"y":284...,"tool":3,"angle":-36...,"frame":0,"details":\[],
  "tool_label":"triangle one"} where r is the radius of a circle circumscribed around the triangle, (x, y) would be the centre of that circle, and the angle is between the vertical y axis and the line from the centre to the drawn out vertex, and is measured positive ccw.
 
- Ellipse:{"x":122...,"y":184...,"rx":129...,"ry":64...,"tool":4,"angle":-27...,"frame":0, "details":[],"tool_label":"ellipse one"} where (x, y) is the centre of the ellipse, rx is the first axis drawn out and ry is the second axis set by default or later adjusted, and the angle is from the x axis to rx positive ccw."""
+ Ellipse:{"x":122...,"y":184...,"rx":129...,"ry":64...,"tool":4,"angle":-27...,"frame":0, "details":\[],"tool_label":"ellipse one"} where (x, y) is the centre of the ellipse, rx is the first axis drawn out and ry is the second axis set by default or later adjusted, and the angle is from the x axis to rx positive ccw.
+ 
+ Polygon:,{"tool":3,"frame":0,"closed":true,"points":\[{"x":375....,"y":272....},{"x":513....,"y":272....},
+     {"x":534....,"y":372...},{"x":461...,"y":408....},{"x":371....,"y":356....}],"details":\[],"tool_label":"polygon"}
+     where the list of points are the vertices. Polygons can be drawn open or closed - the point list does not change.
+
+ Bezier:{"tool":2,"frame":0,"closed":false,"points":\[{"x":480....,"y":262....},{"x":464.....,"y":23....},
+     {"x":704.,"y":121.}],"details":\[],"tool_label":"bezier"} where the 1st, 3rd,5th etc points are the vertices
+     and the 2nd, 4th etc are the points drawn out to form the curves.  Bezier curves can be drawn open
+     (total number of points is odd) or closed (always an even number of points)."""
 
 ### Dealing with sub-tasks
 
@@ -71,7 +87,7 @@ The following block returns the drawing tool data for one drawing task which use
 **Block 2 Adds subtasks to Block 1.**
 
 
-**Block 3 More drawing tools: Line, Rectangle, Column, Triangle, Ellipse, Mixed tool types in a task.**
+**Block 3 More drawing tools: Line(s), Rectangle, Column, Triangle, Ellipse, Polygon, Bezier curve - Mixed tool types in a task.**
 
 While the general idea is the same for all these tool types, the dictionary elements defining the figure change and we need to modify the code to handle these details. For drawing tasks that use different drawing tools within the same task we have to use the tool numbers defined in the project to explicitly select the code that will flatten and simplify the output. Find the tool numbers by looking for the tool labels in the raw data - there will be a one to one correspondence.
 The data will need to be split out in columns - one column per task and drawing tool_label. Example:  two drawing tasks, one with four colours of points and another with one colour of circle would require five field names and give five columns.
