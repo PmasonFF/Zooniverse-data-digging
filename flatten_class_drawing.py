@@ -32,6 +32,12 @@ can complicate the 'details' section.
 
  Line:{"x1":681...,"x2":626....,"y1":132....,"y2":209....,"tool":0,"frame":0,"details":[],"tool_label":"line one"}
      where (x1,y1) is the first point set and (x2, y2) is the drawn out point.
+     
+ Vert_line:{"x":354.....,"tool":1,"frame":0,"details":[],"tool_label":"full height line"} where x is thelocation
+      of the vertical full height line.
+
+ Horz_line:{"y":144.37255859375,"tool":0,"frame":0,"details":[],"tool_label":"full width line"} where y is
+      the location of the horizontal full width line.
 
  Rectangle:{"x":335...,"y":88...,"tool":1,"frame":0,"width":168...,"height":66...,"details":[],
      "tool_label":"box one"} where (x, y) is the upper left corner.
@@ -46,11 +52,20 @@ can complicate the 'details' section.
 
  Ellipse:{"x":122...,"y":184...,"rx":129...,"ry":64...,"tool":4,"angle":-27...,"frame":0,"details":[],
      "tool_label":"ellipse one"} where (x, y) is the centre of the ellipse, rx is the first axis drawn out
-     and ry is the second axis set by default or later adjusted, and the angle is from the x axis to rx positive ccw."""
+     and ry is the second axis set by default or later adjusted, and the angle is from the x axis to rx positive ccw.
+     
+  Polygon:,{"tool":3,"frame":0,"closed":true,"points":[{"x":375....,"y":272....},{"x":513....,"y":272....},
+     {"x":534....,"y":372...},{"x":461...,"y":408....},{"x":371....,"y":356....}],"details":[],"tool_label":"polygon"}
+     where the list of points are the vertices. Polygons can be drawn open or closed - the point list does not change.
+
+ Bezier:{"tool":2,"frame":0,"closed":false,"points":[{"x":480....,"y":262....},{"x":464....,"y":23....},
+     {"x":704....,"y":121....}],"details":[],"tool_label":"bezier"} where the 1st, 3rd, 5th etc points are the vertices
+     and the 2nd, 4th etc are the points pull or drawn out to form the curves.  Bezier curves can be drawn open
+     (total number of points is odd) or closed (always an even number of points)."""
 
 #  _______________________________________________________________________________________________________________
 
-# Block 1 Task uses one tool type - points or circles without sub-tasks.
+# Block 1 Task uses one tool type - example several colours of points or circles without sub-tasks.
 # The following block returns the drawing tool data for one drawing task which uses several tools of the SAME
 # drawing type (eg colours of points representing different things, or rectangles of different colours to mark
 # different blocks of text etc).  For now we will assume no sub_tasks.  Block 2 will show how to add sub_tasks to
@@ -216,6 +231,24 @@ def pull_line(drawn_object, task_label):
     return drawing
 
 
+def pull_vert_line(drawn_object, task_label):
+    x = round(drawn_object['x'], 0)
+    #  various functions to test the validity of the drawing can be added
+    #  here. See flatten_class_tests.py if available
+    detail = [item['value'] for item in drawn_object['details']]
+    drawing = [x, task_label, detail]
+    return drawing
+
+
+def pull_horz_line(drawn_object, task_label):
+    y = round(drawn_object['x'], 0)
+    #  various functions to test the validity of the drawing can be added
+    #  here. See flatten_class_tests.py if available
+    detail = [item['value'] for item in drawn_object['details']]
+    drawing = [y, task_label, detail]
+    return drawing
+
+
 def pull_rectangle(drawn_object, task_label):
     x = round(drawn_object['x'], 0)
     y = round(drawn_object['y'], 0)
@@ -261,7 +294,27 @@ def pull_ellipse(drawn_object, task_label):
     detail = [item['value'] for item in drawn_object['details']]
     drawing = [x, y, rx, ry, a, task_label, detail]
     return drawing
+   
+   
+def pull_polygon(drawn_object, task_label):
+    points = [[round(item['x'], 0), round(item['y'], 0)] for item in drawn_object['points']]
+    if not drawn_object['closed']:
+        closed = 0
+    else: closed = 1
+    detail = [item['value'] for item in drawn_object['details']]
+    drawing = [points, closed, task_label, detail]
+    return drawing
+   
 
+def pull_bezier(drawn_object, task_label):
+    points = [[round(item['x'], 0), round(item['y'], 0)] for item in drawn_object['points']]
+    if not drawn_object['closed']:
+        closed = 0
+    else: closed = 1
+    detail = [item['value'] for item in drawn_object['details']]
+    drawing = [points, closed, task_label, detail]
+    return drawing
+   
 
     # Fourth - add working block below to the main area of the frame within the iteration loop - see demo.
         #  Select the correct conditional block for each tool number in the task, one per tool number eg if the
@@ -290,7 +343,15 @@ def pull_ellipse(drawn_object, task_label):
 
                                 if drawing_object['tool'] is L: #  Where L is an integer - the tool number for a Line
                                     drawings_1_L.append(pull_line(drawing_object, task_label_1))
-
+                                    
+                                if drawing_object['tool'] is V: #  Where V is an integer - the tool number for a Full
+                                    # height Line
+                                    drawings_1_V.append(pull_line(drawing_object, task_label_1))
+                                    
+                                if drawing_object['tool'] is H: #  Where H is an integer - the tool number for a Full
+                                    # width Line
+                                    drawings_1_H.append(pull_line(drawing_object, task_label_1)) 
+                                
                                 if drawing_object['tool'] is 'R': #  Where R is an integer - the tool# for a Rectangle
                                     drawings_1_R.append(pull_rectangle(drawing_object, task_label_1))
 
@@ -300,8 +361,18 @@ def pull_ellipse(drawn_object, task_label):
                                 if drawing_object['tool'] is 'T': #  Where T is an integer - the tool# for a Triangle
                                     drawings_1_T.append(pull_triangle(drawing_object, task_label_1))
 
-                                if drawing_object['tool'] is 'E': #  Where T is an integer - the tool# for an Ellipse
+                                if drawing_object['tool'] is 'E': #  Where E is an integer - the tool# for an Ellipse
                                     drawings_1_E.append(pull_ellipse(drawing_object, task_label_1))
+                                    
+                                if drawing_object['tool'] is 'G': #  Where G is an integer - the tool# for an Polygon
+                                    drawings_1_G.append(pull_polygon(drawing_object, task_label_1))
+                                    
+                                if drawing_object['tool'] is 'B': #  Where B is an integer - the tool# for an 
+                                    #  Bezier curve.  This output holds all the useful information but to use it 
+                                    #  will likely require reconstructing the bezier curve in a functional form y = f(x) 
+                                    #  from these defining points. See above for how the points are ordered.
+                                    drawings_1_B.append(pull_bezier(drawing_object, task_label_1))
+
 
                     except KeyError:
                         continue
