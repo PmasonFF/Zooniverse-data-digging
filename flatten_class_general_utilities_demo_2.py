@@ -152,10 +152,11 @@ with open(out_location, 'w', newline='') as file:
                 dimensions = metadata['subject_dimensions']
                 widths = dimensions[0]
                 if widths is not None:
-                    image_size = [round(widths['naturalWidth']), round(widths['naturalHeight'])]
+                    image_size = json.dumps([round(widths['naturalWidth']),
+                                             round(widths['naturalHeight'])])
                 else:
                     no_size.append(row['classification_id'])
-                    image_size = [2000, 1500]
+                    image_size = json.dumps([2000, 1500])
 
                 # This set up the writer to match the field names above and the variable names of their values:
                 writer.writerow({'line_number': str(i),
