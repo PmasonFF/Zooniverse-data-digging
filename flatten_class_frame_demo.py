@@ -1,5 +1,5 @@
 """ This script is a demo for the flatten_classification_frame where it is used to slice out (or select)
- two specific subject numbers from the Aerobotany classification download.
+ two specific subject numbers for the Aerobotany classification download.
  This script demonstrates shows the basic script modified in four ways:
  1) The actual path and file names were modified to match the files on my drive.
  2) The comment lines have been stripped out - This script is actually fairly short!
@@ -38,7 +38,6 @@ with open(out_location, 'w', newline='') as file:
                   'workflow_version',
                   'created_at',
                   'gold_standard',
-                  'annotations',
                   'subject_ids']
     writer = csv.DictWriter(file, fieldnames=fieldnames)
     writer.writeheader()
@@ -58,7 +57,6 @@ with open(out_location, 'w', newline='') as file:
                                  'workflow_version': row['workflow_version'],
                                  'created_at': row['created_at'],
                                  'gold_standard': row['gold_standard'],
-                                 'annotations': row['annotations'],
                                  'subject_ids': row['subject_ids']})
 
                 print(j)
