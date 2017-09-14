@@ -117,10 +117,11 @@ with open(out_location, 'w', newline='') as file:
                 dimensions = metadata['subject_dimensions']
                 widths = dimensions[0]
                 if widths is not None:
-                    image_size = [round(widths['naturalWidth']), round(widths['naturalHeight'])]
+                    image_size = json.dumps([round(widths['naturalWidth']),
+                                             round(widths['naturalHeight'])])
                 else:
                     no_size.append(row['classification_id'])
-                    image_size = [795, 545]
+                    image_size = json.dumps([795, 545])
 
                 # Writer must agree with open field names and assign correct values to the fields
                 writer.writerow({'line_number': str(i),
