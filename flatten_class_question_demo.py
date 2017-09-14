@@ -116,6 +116,7 @@ with open(out_location, 'w', newline='') as file:
                                     task_answer_3 = 'Mud'
                     except KeyError:
                         continue
+                task_vector_1 = json.dumps(task_vector_1)
 
                 # Writer must agree with open field names and assign correct values to the fields
                 writer.writerow({'line_number': str(i),
