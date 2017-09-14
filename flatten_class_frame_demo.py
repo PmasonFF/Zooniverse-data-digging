@@ -17,7 +17,7 @@ from datetime import datetime
 csv.field_size_limit(sys.maxsize)
 
 location = r'C:\py\AAClass\amazon-aerobotany-classifications_2017-03-18.csv'
-out_location = r'C:\py\AAClass\flatten_class_demo_output.csv'
+out_location = r'C:\py\AAClass\flatten_class_frame_demo_output.csv'
 
 
 # define a function that returns True or False based on whether the argument record is to be included or not in
