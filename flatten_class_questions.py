@@ -193,7 +193,7 @@ The following blocks describe ways to address these issues for question tasks:""
                 # reset the out put values:
                 task_answer_1 = ''
                 task_vector_2 = [0, 0, 0, ... ]  # elements are the "unselected" flags
-                task_vector_N = ''
+                task_answer_N = ''
                 for task in annotations:
                     # for single answer questions as before (returns the actual answer text which can be
                     # processed further if desired:
@@ -225,5 +225,7 @@ The following blocks describe ways to address these issues for question tasks:""
                                 task_answer_N = str(task['value'])
                     except KeyError:
                         continue
+                # convert lists to JSON string format prior to writing them to file
+                task_vector_2 = json.dumps(task_vector_2)
 #  _________________________________________________________________________________________________________________
 
