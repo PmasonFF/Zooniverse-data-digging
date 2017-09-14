@@ -145,10 +145,11 @@ def load_pick_image():
                 dimensions = metadata['subject_dimensions']
                 widths = dimensions[0]
                 if widths is not None:
-                    image_size = [round(widths['naturalWidth']), round(widths['naturalHeight'])]
+                    image_size = json.dumps([round(widths['naturalWidth']),
+                                             round(widths['naturalHeight'])])
                 else:
                     no_size.append(row['classification_id'])
-                    image_size = [795, 545]
+                    image_size = json.dumps([some default, values here])
     # Fourth, add an image_size field to the list of file names and to the writer with value image_size
     # Lastly, add a status print to the end of the frame code
             print('classifications with no image size', no_size)
