@@ -179,8 +179,14 @@ with open(out_location, 'w', newline='') as file:
                                     drawings_1_5.append(pull_column(drawing_object, labels[5]))
                     except KeyError:
                         continue
+                drawings_1_0 = json.dumps(drawings_1_0)
+                drawings_1_1 = json.dumps(drawings_1_1)
+                drawings_1_2 = json.dumps(drawings_1_2)
+                drawings_1_3 = json.dumps(drawings_1_3)
+                drawings_1_4 = json.dumps(drawings_1_4)
+                drawings_1_5 = json.dumps(drawings_1_5)
 
-                # This set up the writer to match the field names above and the variable names of their values:
+                # This sets up the writer to match the field names above and the variable names of their values:
                 writer.writerow({'line_number': str(i),
                                  'subject_ids': row['subject_ids'],
                                  'workflow_id': row['workflow_id'],
