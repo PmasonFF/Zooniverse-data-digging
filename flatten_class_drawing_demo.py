@@ -156,6 +156,10 @@ with open(out_location, 'w', newline='') as file:
                                         drawings_2.append(pull_circle(drawing_object, labels[2]))
                     except KeyError:
                         continue
+                # return lists to JSON string format prior to writing them to file
+                drawings_0 = json.dumps(drawings_0)
+                drawings_1 = json.dumps(drawings_1)
+                drawings_2 = json.dumps(drawings_2)
 
                 # This set up the writer to match the field names above and the variable names of their values:
                 writer.writerow({'line_number': str(i),
