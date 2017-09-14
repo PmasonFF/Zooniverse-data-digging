@@ -114,6 +114,11 @@ can complicate the 'details' section.
 
                     except KeyError:
                         continue
+                # return lists to JSON string format prior to writing them to file
+                drawings_0 = json.dumps(drawings_0)
+                drawings_1 = json.dumps(drawings_1)
+                #....
+                drawings_N = json.dumps(drawings_N)
 # __________________________________________________________________________________________________________________
 
 #  Block 2 Dealing with sub-tasks
@@ -173,6 +178,11 @@ can complicate the 'details' section.
 
                     except KeyError:
                         continue
+                # return lists to JSON string format prior to writing them to file
+                drawings_0 = json.dumps(drawings_0)
+                drawings_1 = json.dumps(drawings_1)
+                #....
+                drawings_N = json.dumps(drawings_N)
 #  __________________________________________________________________________________________________________________
 
 #  Block 3 More drawing tools: Line, Rectangle, Column, Triangle, Ellipse, Mixed tool types in a task.
@@ -376,5 +386,10 @@ def pull_bezier(drawn_object, task_label):
 
                     except KeyError:
                         continue
+                # return lists to JSON string format prior to writing them to file
+                drawings_1_0 = json.dumps(drawings_1_0)
+                drawings_1_1 = json.dumps(drawings_1_1)
+                #....
+                drawings_X_N = json.dumps(drawings_X_N)
 
 #  _________________________________________________________________________________________________________________
