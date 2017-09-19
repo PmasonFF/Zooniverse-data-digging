@@ -27,8 +27,8 @@ This will provide the framework the other blocks will be added onto. By itself i
 - Drawing tool - Single tool type, no sub-tasks (Complete)
 - Drawing tool - Sub-tasks (Complete)
 - Drawing tool - Multiple tool types in one task (Complete)
-- Transcription - single field
-- Transcription - Mark and transcribe or comment
+- Transcription - single field (Complete)
+- Transcription - Mark and transcribe or comment (Complete)
 - Survey - 2D (choice and how many) full array
 - Survey - 3D (choice, how many, behaviour) full array
 - Survey - 2D non-zero elements only
