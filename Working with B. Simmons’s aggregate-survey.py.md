@@ -31,7 +31,8 @@ Download your_project-workflows.csv and your_project-workflow_contents.csv and c
 
 Generate test data in your project and download your_project-classifications.csv. to the project directory.
 
-To get things working it is easier to slice out one workflow version from the classification download using flatten_class_frame.py rather than fight with getting the parameters for aggregate-survey.py correct before you even have the basic script working.
+To get things working I had to slice out one workflow and version from the classification download using flatten_class_frame.py. 
+
 
 ## Modifications to the scripts for Pyhton 3.x:
 
@@ -76,15 +77,17 @@ line
 
 ## Running aggregate-survey,py 
 
-Despite modifying the classfile name in hardcoding, the script must be called with at least one argument – the classifications.csv file name: 
+Despite modifying the classfile name in hardcoding, the script must be called with at least one argument – the classifications.csv file name which overrides the hardcoded filename: 
 
 Python aggregate-survey.py your_project-classifications.csv
 
 (From the Pycharm editor one can set the parameter script by right clicking on the green run arrow. Most other editors will have a similar function)
 
-If you have not sliced the classification file to one workflow_id and version and hardcoded that info in lines 13, 14 you will have to add the appropriate parameters to the command line,
+If you have not hardcoded the workflow_id and workflow_version info in lines 13, 14 you will have to add the appropriate parameters to the command line.  The command line will override whatever **is** hardcoded if you specify the parameters.
 
 aggregate-survey.py yopur_project-classifications.csv   workflow_id=XXXX  workflow_version=XXX.XX
+
+**Note I was unable to run this script on a classification file with more than one workflow in it.  Slice out the one workflow and version using flatte_class_frame.py**
 
 Attempt to run the script. If you get the instructions for usage and the parameter structures check you are supplying the correct files (and names), and the parameters are correct.
 
