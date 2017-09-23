@@ -1,4 +1,4 @@
-## Working with B. Simmons’aggregate-survey.py
+## Working with B. Simmons’ aggregate-survey.py
 
 
 This script is actually more versatile than the name suggests -  elements of it can be used to flatten the classification file for many task types, but the examples in the Zooniverse  Data digging repository have been slightly tailored to specific survey tasks – wildwatch_kenya and cleveland_wildlife.
