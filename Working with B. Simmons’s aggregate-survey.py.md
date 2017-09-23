@@ -73,6 +73,8 @@ line
   	197	for t, q in theqdict.iteritems():
       
   	to:	for t, q in theqdict.items():
+	
+Note that these are the only modifications I made to get this script to run on a standard survey project with one task and no vote fraction calculations.  Other branches I did not test may have more Python 2.7 to Python 3.x issues.
       
 
 ## Running aggregate-survey,py 
