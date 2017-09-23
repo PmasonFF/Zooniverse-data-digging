@@ -44,7 +44,7 @@ This will provide the framework the other blocks will be added onto. By itself i
 - Drawing tool - Multiple tool types in one task (Complete)
 - Transcription - Single field (Complete)
 - Transcription - Mark and transcribe or comment (Complete)
-- Survey - Using B. Simmons' aggregate-survey.py
+- Survey - Using B. Simmons' aggregate-survey.py (Complete)
 - Survey - Building blocks
 
 #### 4) Test blocks which will preform simple tests on the output from one or more of the blocks listed in 3):
