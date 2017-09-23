@@ -108,3 +108,14 @@ To understand these files consider an example project survey task with 25 animal
 The “_aggregated.csv” file is simply only those columns, which for at least one subject, have a non-zero value.
 
 From this file it is relatively easy to calculate vote fractions for any choice and answer option.  It would be up to a project team to pick out those that have significance for their project.
+
+
+## Demo Files
+
+The file   survey-classifications.csv   is a sample zooniverse classification file for a survey task built using the project builder and the template csv files provided there.
+
+The file   survey-classifications_annotations_1lineeach.csv  is the flattened file output by aggregate-aurvey.py for the input file as noted above.
+
+The file   survey-classifications_aggregated.csv is the “short” version of the aggregated file. For the above input.
+
+
