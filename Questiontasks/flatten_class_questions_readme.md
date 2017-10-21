@@ -30,5 +30,5 @@ In the output file there is one column per multiple-allowed answer question whic
 ####  Question Demo - flatten_class_question_demo.py
 
 This file uses Block 4 to flatten a task question for the original FossilFinder workflow 371 (workflow_versions > 160.01) which had five possible answers.  While only one answer was allowed, I have used the multiple-allowed answer vector block to reduce the list of possible answers in the JSON format to a list of 0, 1’s where 1 is the answer selected.  Note the task_answer_template_1 which holds the answer snippets.
-The demo then goes on to flatten two further simple question tasks into separate columns using Block 2. It also uses one of the general utilities blocks and an external user_ip:assigned_name file to replace not-logged-in user names.  The input file is again selected records from Fossil Finder - fossil-finder-classifications_test.csv, anfd the output file is flatten_class_questions_demo.csv.
+The demo then goes on to flatten two further simple question tasks into separate columns using Block 2. It also uses one of the general utilities blocks and an external user_ip:assigned_name file to replace not-logged-in user names.  The input file is again selected records from Fossil Finder - fossil-finder-classifications_test.csv, and the output file is flatten_class_questions_demo.csv.
 
