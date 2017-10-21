@@ -89,7 +89,7 @@ If you have not hardcoded the workflow_id and workflow_version info in lines 13,
 
 aggregate-survey.py yopur_project-classifications.csv   workflow_id=XXXX  workflow_version=XXX.XX
 
-**Note I was unable to run this script on a classification file with more than one workflow in it.  Slice out the one workflow and version using flatte_class_frame.py**
+**Note Despite the fact this is suppopsed to allow this script to work on downloads with more than one workflow,  I was unable to run this script on a classification file with more than one workflow in it.  I did not attempt to debug this, I simply sliced out the one workflow and version using flatten_class_frame.py**
 
 Attempt to run the script. If you get the instructions for usage and the parameter structures check you are supplying the correct files (and names), and the parameters are correct.
 
@@ -99,7 +99,7 @@ If you get a ‘dict-keys’ is not subscriptable error, verify you have correct
 
 These scripts return three files. The first, with “_1lineeach” in the file name, is the flattened data. Note there is one line for each species identified in each subject.  There is the usual columns from the classification file:
 
-classification_id	subject_ids	created_at	user_name	user_id	user_ip
+classification_id	subject_ids	created_at	user_name	user_id	      user_ip
  
 In addition there is a column for the choice made, plus one column for every sub-task question that was answered in any classification.  If the project had more than one survey task the columns for the next survey task follow.  If there are other types of tasks in the project there may be columns for those as well but not all tasks are completely broken out. Simple questions (single or multiple answer) should work, as should the “shortcut” questions used by some surveys  which as of this writing is experimental and not available through the standard project builder survey task.
 
