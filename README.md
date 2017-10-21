@@ -45,7 +45,7 @@ This will provide the framework the other blocks will be added onto. By itself i
 - Transcription - Single field (Complete)
 - Transcription - Mark and transcribe or comment (Complete)
 - Survey - Using B. Simmons' aggregate-survey.py (Complete)
-- Survey - Building blocks
+- Survey - Building block approach including flattening aggregation and filter/reconcile results (Complete)
 
 #### 4) Test blocks which will preform simple tests on the output from one or more of the blocks listed in 3):
 - \*Test points from point drawing tools lay within the image_size (ie no out-of-bounds points.)
