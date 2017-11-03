@@ -177,21 +177,23 @@ print(sort_file(out_location,
 
 
 def process_aggregation(subj, cl_counter, workflo_id, workflo_version, ag_answer, subjs_to_add):
-    if ag_answer/cl_counter >= test_criteria:
-        out_put_1 = 'advance'
-        out_put_2 = 1
-        subjs_to_add |= {subject}
-    else:
-        out_put_1 = 'retire'
-        out_put_2 = 0
-    new_row = {'subject_ids': subj, 'classifications': cl_counter,
-               'workflow_id': workflo_id,
-               'workflow_version': workflo_version,
-               'advance': out_put_1,
-               'flag': out_put_2
-               }
-    writer_ag_out.writerow(new_row)
+    if cl_counter >= retirement:
+        if ag_answer/cl_counter >= test_criteria:
+            out_put_1 = 'advance'
+            out_put_2 = 1
+            subjs_to_add |= {subject}
+        else:
+            out_put_1 = 'retire'
+            out_put_2 = 0
+        new_row = {'subject_ids': subj, 'classifications': cl_counter,
+                   'workflow_id': workflo_id,
+                   'workflow_version': workflo_version,
+                   'advance': out_put_1,
+                   'flag': out_put_2
+                   }
+        writer_ag_out.writerow(new_row)
     return subjs_to_add
+    
 
 
 print('Aggregate, and test subjects for advancement, prepare list.')
@@ -246,7 +248,7 @@ with open(location + '_aggregated.csv', 'w', newline='') as ag_file:
                                               bin_1, subjects_to_add)
 
 if step_to_analyse == 'Q4':
-    proj = Project.find(slug='tedcheese/whales-as-individuals')  # this will become WAI 'tedcheese/whales-as-individuals'
+    proj = Project.find(slug='tedcheese/whales-as-individuals')  
 try:
     # check if the subject set already exits
     subject_set = SubjectSet.where(project_id=proj.id, display_name=set_name).next()
