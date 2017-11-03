@@ -83,6 +83,7 @@ with open(subject_location) as sub_file:
             subject_id = sub_row['subject_id']
             lower = min(int(subject_id), lower)
             upper = max(int(subject_id), upper)
+            
 location = 'sas_' + step_to_analyse + '_' + base_subject_set_id + '_' + time.strftime('%Y-%m-%d')
 out_location = location + '_slice.csv'
 
