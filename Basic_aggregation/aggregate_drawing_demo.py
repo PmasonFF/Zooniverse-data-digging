@@ -10,10 +10,7 @@ locationselect = r'C:\py\Data_digging\aggregate_drawing_demo.csv'
 
 
 def process_aggregation(subj, image, clas, ep, min_point, h_palms, flowring, leafles):
-    if clas > 10:  # test for a minimum of 10 valid clssifications
-        c_p = []
-        clusters = []
-        noise = []
+    if clas > 10:  # test for a minimum of 10 valid clssifications       
         scanh = dbscan.DBSCAN(ep, min_point)
         scanh.cluster(h_palms)
         hc_p = json.dumps(scanh.points)
@@ -33,7 +30,7 @@ def process_aggregation(subj, image, clas, ep, min_point, h_palms, flowring, lea
         lclusters = json.dumps(scanl.clusters)
         lnoise = json.dumps(scanl.noise)
         print(subject)
-        new_row = {'subject_ids': subject, 'image_number': image_number, 'classifications': i,
+        new_row = {'subject_ids': subj, 'image': image_number, 'classifications': i,
                    'Count_h_palms': count_h, 'H_palm_clusters': hc_p, 'Hclusters': hclusters,
                    'Hnoise': hnoise, 'Count_flowering': count_f, 'flowering_clusters': fc_p,
                    'fclusters': fclusters, 'fnoise': fnoise, 'Count_leafless': count_l,
