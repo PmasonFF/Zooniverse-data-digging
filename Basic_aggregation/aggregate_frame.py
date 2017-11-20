@@ -23,26 +23,31 @@ outlocation = r'C:\py\Data_digging\aggregate.csv'
 # compare that to the average of the same field for other subjects which have not yet been aggregated.
 
 
-def process_aggregation(subj, cl_counter, other_fields, aggregated_bin_1, aggregated_bin_2, aggregated_bin_3):
+f process_aggregation(subj, cl_counter, other_fields, aggregated_bin_1, aggregated_bin_2, aggregated_bin_3):
     # process the aggregated data for a subject.  The input variables are the function parameters and
-    # the out_put can be any consistent function of those variables.  Typical processing could include
+    # the out_put can be any consistent function of those variables.  Typical processing should include
+    # verifying enough (some_limit) valid classifications were aggregated (even though all subjects may be 
+    # retired, there may be cases not all the classifications are valid. Other processing could include 
     # clustering drawing points, calculating vote fractions, applying a Bayesian pipeline, or simply
     # modifying the order or presentation format of the aggregate data.
-    out_put_1 = []
-    out_put_2 = 0
-    out_put_3 = []
-    # Once the aggregated data is processed and the out_put variables defined we can
-    # set up and write the aggregated and processed data to a file.  The field names can be chosen to
-    # make the data as useful as possible. They must match the fieldnames in the section below - both
-    # in order and spelling.
-    new_row = {'subject_ids': subj, 'classifications': cl_counter,
-               'Other field passed through from the classification file': other_fields,
-               'agregated_bin_and_processed_field_1': out_put_1,
-               'agregated_bin_and_processed_field_2': out_put_2,
-               'agregated_bin_and_processed_field_3': out_put_3
-               }
-    writer.writerow(new_row)
-    return None
+    if cl_counter > some_limit: 
+        out_put_1 = []
+        out_put_2 = 0
+        out_put_3 = []
+        # Once the aggregated data is processed and the out_put variables defined we can
+        # set up and write the aggregated and processed data to a file.  The field names can be chosen to
+        # make the data as useful as possible. They must match the fieldnames in the section below - both
+        # in order and spelling.
+        new_row = {'subject_ids': subj, 'classifications': cl_counter,
+                   'Other field passed through from the classification file': other_fields,
+                   'agregated_bin_and_processed_field_1': out_put_1,
+                   'agregated_bin_and_processed_field_2': out_put_2,
+                   'agregated_bin_and_processed_field_3': out_put_3
+                   }
+        writer.writerow(new_row)
+        return True
+    else:
+        return False
 
 
 # set up the output file names for the aggregated and processed data, and write the header.  The
