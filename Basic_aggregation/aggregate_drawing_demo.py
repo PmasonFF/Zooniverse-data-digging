@@ -10,35 +10,38 @@ locationselect = r'C:\py\Data_digging\aggregate_drawing_demo.csv'
 
 
 def process_aggregation(subj, image, clas, ep, min_point, h_palms, flowring, leafles):
-    c_p = []
-    clusters = []
-    noise = []
-    scanh = dbscan.DBSCAN(ep, min_point)
-    scanh.cluster(h_palms)
-    hc_p = json.dumps(scanh.points)
-    count_h = len(scanh.points)
-    hclusters = json.dumps(scanh.clusters)
-    hnoise = json.dumps(scanh.noise)
-    scanf = dbscan.DBSCAN(ep, min_point)
-    scanf.cluster(flowring)
-    fc_p = json.dumps(scanf.points)
-    count_f = len(scanf.points)
-    fclusters = json.dumps(scanf.clusters)
-    fnoise = json.dumps(scanf.noise)
-    scanl = dbscan.DBSCAN(ep, min_point)
-    scanl.cluster(leafles)
-    lc_p = json.dumps(scanl.points)
-    count_l = len(scanl.points)
-    lclusters = json.dumps(scanl.clusters)
-    lnoise = json.dumps(scanl.noise)
-    print(subject)
-    new_row = {'subject_ids': subject, 'image_number': image_number, 'classifications': i,
-               'Count_h_palms': count_h, 'H_palm_clusters': hc_p, 'Hclusters': hclusters,
-               'Hnoise': hnoise, 'Count_flowering': count_f, 'flowering_clusters': fc_p,
-               'fclusters': fclusters, 'fnoise': fnoise, 'Count_leafless': count_l,
-               'leafless_clusters': lc_p, 'lclusters': lclusters, 'lnoise': lnoise}
-    writer.writerow(new_row)
-    return None
+    if clas > 10: test for a minimum of 10 valid clssifications
+        c_p = []
+        clusters = []
+        noise = []
+        scanh = dbscan.DBSCAN(ep, min_point)
+        scanh.cluster(h_palms)
+        hc_p = json.dumps(scanh.points)
+        count_h = len(scanh.points)
+        hclusters = json.dumps(scanh.clusters)
+        hnoise = json.dumps(scanh.noise)
+        scanf = dbscan.DBSCAN(ep, min_point)
+        scanf.cluster(flowring)
+        fc_p = json.dumps(scanf.points)
+        count_f = len(scanf.points)
+        fclusters = json.dumps(scanf.clusters)
+        fnoise = json.dumps(scanf.noise)
+        scanl = dbscan.DBSCAN(ep, min_point)
+        scanl.cluster(leafles)
+        lc_p = json.dumps(scanl.points)
+        count_l = len(scanl.points)
+        lclusters = json.dumps(scanl.clusters)
+        lnoise = json.dumps(scanl.noise)
+        print(subject)
+        new_row = {'subject_ids': subject, 'image_number': image_number, 'classifications': i,
+                   'Count_h_palms': count_h, 'H_palm_clusters': hc_p, 'Hclusters': hclusters,
+                   'Hnoise': hnoise, 'Count_flowering': count_f, 'flowering_clusters': fc_p,
+                   'fclusters': fclusters, 'fnoise': fnoise, 'Count_leafless': count_l,
+                   'leafless_clusters': lc_p, 'lclusters': lclusters, 'lnoise': lnoise}
+        writer.writerow(new_row)
+        return True
+    else: 
+        return False
 
 
 # set up the output file names for the aggregated and clustered data points
