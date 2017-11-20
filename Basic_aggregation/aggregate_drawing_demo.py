@@ -72,6 +72,7 @@ with open(locationselect, 'w', newline='') as file:
             # read a row and pullout the flattened data fields we need to aggregate, or output.
             new_subject = row['subject_ids']
             new_image_number = row['image_number']
+            new_user = row['user_name']
             row_H_palm = json.loads(row['H palm'])
             row_flowering = json.loads(row['flowering'])
             row_leafless = json.loads(row['leafless'])
@@ -87,14 +88,17 @@ with open(locationselect, 'w', newline='') as file:
                 i = 1
                 subject = new_subject
                 image_number = new_image_number
+                users = {new_user}
                 eps = new_eps
                 h_palm = row_H_palm
                 flowering = row_flowering
                 leafless = row_leafless
 
             else:
-                # do the aggregation
-                if i <= 15:
+                # do the aggregation - clean for excess classifications and multiple classifications by the same
+                # user on this subject
+                 if users != users | {new_user} and i <= 15:
+                    users |= {new_user}
                     h_palm.extend(row_H_palm)
                     flowering.extend(row_flowering)
                     leafless.extend(row_leafless)
