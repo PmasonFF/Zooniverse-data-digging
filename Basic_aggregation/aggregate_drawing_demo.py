@@ -10,7 +10,7 @@ locationselect = r'C:\py\Data_digging\aggregate_drawing_demo.csv'
 
 
 def process_aggregation(subj, image, clas, ep, min_point, h_palms, flowring, leafles):
-    if clas > 10: test for a minimum of 10 valid clssifications
+    if clas > 10:  # test for a minimum of 10 valid clssifications
         c_p = []
         clusters = []
         noise = []
@@ -100,7 +100,7 @@ with open(locationselect, 'w', newline='') as file:
             else:
                 # do the aggregation - clean for excess classifications and multiple classifications by the same
                 # user on this subject
-                 if users != users | {new_user} and i <= 15:
+                if users != users | {new_user} and i <= 15:
                     users |= {new_user}
                     h_palm.extend(row_H_palm)
                     flowering.extend(row_flowering)
