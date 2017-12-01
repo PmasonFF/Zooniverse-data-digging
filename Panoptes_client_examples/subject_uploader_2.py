@@ -63,7 +63,7 @@ for filename, metadata in subject_metadata.items():
         subject.save()
         print filename
         subject_set.add(subject.id)
-        new_subjects = += 1
+        new_subjects += 1
     except panoptes_client.panoptes.PanoptesAPIException:
         print 'An error occurred during the upload of ', filename
 print new_subjects, 'new subjects created and uploaded'
