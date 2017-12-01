@@ -53,7 +53,7 @@ except StopIteration:
     subject_set.save()
 
 print 'Uploading subjects, this could take a while!'
-new_subjects = []
+new_subjects = 0
 for filename, metadata in subject_metadata.items():
     try:
         subject = Subject()
@@ -62,15 +62,11 @@ for filename, metadata in subject_metadata.items():
         subject.metadata.update(metadata)
         subject.save()
         print filename
-        new_subjects.append(subject)
+        subject_set.add(subject.id)
+        new_subjects = += 1
     except panoptes_client.panoptes.PanoptesAPIException:
         print 'An error occurred during the upload of ', filename
-print len(new_subjects), 'new subjects created and uploaded'
-try:
-    subject_set.add(new_subjects)
-    pass
-except panoptes_client.panoptes.PanoptesAPIException:
-    print 'subjects did not link correctly'
+print new_subjects, 'new subjects created and uploaded'
 
 uploaded = 0
 with open(location + os.sep + 'Uploaded subjects.csv', 'wt') as file_up:
