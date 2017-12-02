@@ -9,9 +9,9 @@ Panoptes.connect(username=os.environ['User_name'], password=os.environ['Password
 project = Project.find(slug='pmason/fossiltrainer')
 
 while True:
-    location = input('Enter the full path for the image directory, or enter ".." '
+    location = input('Enter the full path for the image directory, or enter "." '
                      'to use the current directory' + '\n')
-    if location == '..':
+    if location == '.':
         location = os.getcwd()
         break
     else:
@@ -29,15 +29,15 @@ while True:
 # to pull the metadata from another source, or it can be updated later with an additional script.
 file_types = ['jpg', 'jpeg', 'png', 'gif', 'svg']
 subject_metadata = {}
-with os.scandir(location) as directory:
-    for entry in directory:
-        if entry.name.partition('.')[2].lower() in file_types:
-            subject_metadata[location + os.sep + entry.name] = {'Filename': entry.name}
-            # Add additional metadata dictionary items in form 'Next_field': ''  The values
-            # for these additional metadata fields can be updated later by their individual keys.
+for entry in os.listdir(location):
+    if entry.partition('.')[2].lower() in file_types:
+        subject_metadata[entry] = {'Filename': entry}
+        # Add additional metadata dictionary items in form 'Next_field': ''  The values
+        # for these additional metadata fields can be updated later by their individual keys.
 print('Found ', len(subject_metadata), ' files to upload in this directory.')
 
 set_name = input('Entry a name for the subject set to use or create:' + '\n')
+previous_subjects = []
 
 try:
     # check if the subject set already exits
@@ -46,6 +46,8 @@ try:
     retry = input('Enter "n" to cancel this upload, any other key to continue' + '\n')
     if retry.lower() == 'n':
         quit()
+    for subject in subject_set.subjects:
+        previous_subjects.append(subject.metadata['Filename'])
 except StopIteration:
     print('You have chosen to upload ', len(subject_metadata), ' files to an new subject set ',  set_name)
     retry = input('Enter "n" to cancel this upload, any other key to continue' + '\n')
@@ -58,25 +60,21 @@ except StopIteration:
     subject_set.save()
 
 print('Uploading subjects, this could take a while!')
-new_subjects = []
-for file, metadata in subject_metadata.items():
+new_subjects = 0
+for filename, metadata in subject_metadata.items():
     try:
-        subject = Subject()
-        subject.links.project = project
-        subject.add_location(file)
-        subject.metadata.update(metadata)
-        subject.save()
-        print(file)
-        new_subjects.append(subject)
+        if filename not in previous_subjects:
+            subject = Subject()
+            subject.links.project = project
+            subject.add_location(location + os.sep + filename)
+            subject.metadata.update(metadata)
+            subject.save()
+            subject_set.add(subject.id)
+            print(filename)
+            new_subjects += 1
     except panoptes_client.panoptes.PanoptesAPIException:
-        print('An error occurred during the upload of ', file)
-print(len(new_subjects), 'new subjects created and uploaded')
-
-try:
-    subject_set.add(new_subjects)
-    pass
-except panoptes_client.panoptes.PanoptesAPIException:
-    print('one or more subjects did not link correctly')
+        print('An error occurred during the upload of ', filename)
+print(new_subjects, 'new subjects created and uploaded')
 
 uploaded = 0
 with open(location + os.sep + 'Uploaded subjects.csv', 'wt') as file:
