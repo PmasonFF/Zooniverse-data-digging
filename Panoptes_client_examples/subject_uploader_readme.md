@@ -1,4 +1,4 @@
-## Subject_uploader
+e## Subject_uploader
 
 There are two versions of this script.  subject_uploader.py is written in Python 3.6, while subject_uploader_2,py is written in Python 2.7  Both have been tested with small subject sets only, but with a stable internet connection should work fine for larger sets.  In any case error handling should carry the process through any errors and the final part of the script produces a file with the filenames of the subjects that were successfully uploaded for verification.
 
@@ -11,7 +11,7 @@ Next the UI asks for the display_name for the subject set you want to create or 
 
 There is then a confirmation step where the number of files to upload and where they are to be added can be verified before proceeding.
 
-Once that is done the script proceeds to upload the subjects to the subject set.  This can take some time.  The file names are displayed as each file upload is completed (but before they are linked).
+Once that is done the script proceeds to determine what files if any are in the subject set already.  It then attempts to upload any files that are naot already uploaded to the subject set.  This can take some time.  The file names are displayed as each file upload is completed and the subject has been linked to the subject set.
 
-The entire list of newly created subjects is then linked to the desired subject set in one step.  If an error is generated in this step it will not be clear what subjects did or did not link, however the final step queries the subject set directly and produces a file containing the filenames of all the subjects in the subject set at the end of the process.  This can be used, along with the subject set counts, to verify all the subjects were uploaded correctly.
+The final step queries the subject set directly and produces a file containing the filenames of all the subjects in the subject set at the end of the uploading process.  This can be used, along with the subject set counts, to verify all the subjects were uploaded correctly.
 
