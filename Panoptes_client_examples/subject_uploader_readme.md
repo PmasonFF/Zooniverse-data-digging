@@ -1,4 +1,4 @@
-e## Subject_uploader
+## Subject_uploader
 
 There are two versions of this script.  subject_uploader.py is written in Python 3.6, while subject_uploader_2,py is written in Python 2.7  Both have been tested with small subject sets only, but with a stable internet connection should work fine for larger sets.  In any case error handling should carry the process through any errors and the final part of the script produces a file with the filenames of the subjects that were successfully uploaded for verification.
 
