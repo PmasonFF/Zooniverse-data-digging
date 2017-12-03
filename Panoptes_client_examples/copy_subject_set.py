@@ -68,7 +68,7 @@ for sub in add_subjects:
 print(k, ' subjects linked to subject set ', new_set_name, ' in project ', proj_id)
 
 linked = 0
-with open(os.getcwd() + os.sep + 'copied subjects.csv', 'wt') as file:
+with open(os.getcwd() + os.sep + 'copied_subjects.csv', 'wt') as file:
     subject_set = SubjectSet.where(project_id=proj_id, display_name=new_set_name).next()
     for subject in subject_set.subjects:
         linked += 1
