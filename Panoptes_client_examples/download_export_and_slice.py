@@ -12,6 +12,10 @@ Panoptes.connect(username=os.environ['User_name'], password=os.environ['Password
 #  Panoptes.connect(username='User_name', password='Password')
 #  Replace your project slug here:
 project = Project.find(slug='pmason/fossiltrainer')
+dstn_class = r'C:\py\SASClass\fossiltrainer-classifications.csv'
+dstn_subj = r'C:\py\SASClass\fossiltrainer-subjects.csv'
+out_location_class = r'C:\py\SASClass\snapshots-at-sea-classifications_short.csv'
+out_location_subj = r'C:\py\SASClass\snapshots-at-sea-subjects_short.csv'
 
 
 def download_file(url, dstn):
@@ -22,10 +26,8 @@ def download_file(url, dstn):
     return dstn
 
 
-def download_exports(projt):
+def download_exports(projt, dstn_cl, dstn_sb):
     # replace path and filename strings for where you want the exports saved in the next two lines:
-    dstn_class = r'C:\py\SASClass\fossiltrainer-classifications.csv'
-    dstn_subj = r'C:\py\SASClass\fossiltrainer-subjects.csv'
     try:
         meta_class = projt.describe_export('classifications')
         generated = meta_class['media'][0]['updated_at'][0:19]
@@ -33,7 +35,7 @@ def download_exports(projt):
         age = (300 + int(tdelta / 60))
         print(str(datetime.now())[0:19] + '  Classifications export', age, ' hours old')
         url_class = meta_class['media'][0]['src']
-        file_class = download_file(url_class, dstn_class)
+        file_class = download_file(url_class, dstn_cl)
         print(str(datetime.now())[0:19] + '  ' + file_class + ' downloaded')
     except:
         print(str(datetime.now())[0:19] + '  Classifications download did not complete')
@@ -46,7 +48,7 @@ def download_exports(projt):
         age = (300 + int(tdelta / 60))
         print(str(datetime.now())[0:19] + '  Subject export', age, ' hours old')
         url_subj = meta_subj['media'][0]['src']
-        file_subj = download_file(url_subj, dstn_subj)
+        file_subj = download_file(url_subj, dstn_sb)
         print(str(datetime.now())[0:19] + '  ' + file_subj + ' downloaded')
     except:
         print(str(datetime.now())[0:19] + '  Subjects download did not complete')
@@ -61,7 +63,7 @@ def include_class(class_record):
     #  written to the output file. Any or all of these conditional tests that are not needed can be deleted or
     # commented out with '#' placed in front of the line(s)of code that are not required.
 
-    if int(class_record['workflow_id']) == 0000:
+    if int(class_record['workflow_id']) != 0000:
         pass  # replace'!= 0000' with '== xxxx' where xxxx is the workflow to include.  This is also useful to
         # exclude a specific workflow as well.
     else:
@@ -113,13 +115,8 @@ def include_subj(subj_record):
     return True
 
 
-def slice_exports():
-    dstn_class = r'C:\py\SASClass\snapshots-at-sea-classifications.csv'
-    out_location_class = r'C:\py\SASClass\snapshots-at-sea-classifications_short.csv'
-    dstn_subj = r'C:\py\SASClass\snapshots-at-sea-subjects.csv'
-    out_location_subj = r'C:\py\SASClass\snapshots-at-sea-subjects_short.csv'
-
-    with open(out_location_class, 'w', newline='') as file:
+def slice_exports(dstn_cl, out_location_cl, dstn_sb, out_location_sb):
+    with open(out_location_cl, 'w', newline='') as file:
         fieldnames = ['classification_id',
                       'user_name', 'user_id',
                       'user_ip', 'workflow_id',
@@ -140,7 +137,7 @@ def slice_exports():
         j = 0
 
         #  open the zooniverse data file using dictreader
-        with open(dstn_class) as f:
+        with open(dstn_cl) as f:
             r = csv.DictReader(f)
             for row in r:
                 i += 1
@@ -168,7 +165,7 @@ def slice_exports():
 
     k = 0
     m = 0
-    with open(out_location_subj, 'w', newline='') as file:
+    with open(out_location_sb, 'w', newline='') as file:
         fieldnames = ['subject_id',
                       'project_id',
                       'workflow_id',
@@ -182,7 +179,7 @@ def slice_exports():
         writer.writeheader()
 
         #  open the zooniverse data file using dictreader
-        with open(dstn_subj) as f:
+        with open(dstn_sb) as f:
             r = csv.DictReader(f)
             for row in r:
                 k += 1
@@ -205,6 +202,6 @@ def slice_exports():
 
 
 if __name__ == '__main__':
-    print(download_exports(project))
-    print(slice_exports())
+    print(download_exports(project, dstn_class, dstn_subj))
+    print(slice_exports(dstn_class, out_location_class, dstn_subj, out_location_subj))
 #
