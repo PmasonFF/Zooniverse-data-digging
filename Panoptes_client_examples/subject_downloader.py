@@ -59,16 +59,23 @@ while True:
                 quit()
 
 for item in subject_list:
-    print(item.id, item.metadata['Filename'], item.locations[0]['image/jpeg'])
+    try:
+        file_name = location + os.sep + item.metadata['Filename']
+    except KeyError:
+        file_name = location + os.sep + item.id + '.jpg'
+      
+    print(file_name)
+    if os.path.isfile(file_name):
+        print(file_name, ' already exists, not downloaded')
+        continue
+
     # acquire the image
     try:
         im = Image.open(requests.get(item.locations[0]['image/jpeg'], stream=True).raw)
     except IOError:
         print('Subject download for ', item.id, ' failed')
         continue
-    file_name = location + os.sep + item.metadata['Filename']
-    if os.path.isfile(file_name):
-        os.remove(file_name)
+   
     try:
         im.save(file_name, exif=im.info.get('exif'))
     except TypeError:
