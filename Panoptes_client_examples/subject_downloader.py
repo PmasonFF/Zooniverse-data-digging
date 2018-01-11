@@ -57,7 +57,8 @@ while True:
             retry = input('Enter "n" to cancel, any other key to try again' + '\n')
             if retry.lower() == 'n':
                 quit()
-
+              
+i =  0
 for item in subject_list:
     try:
         file_name = location + os.sep + item.metadata['Filename']
@@ -67,6 +68,7 @@ for item in subject_list:
     print(file_name)
     if os.path.isfile(file_name):
         print(file_name, ' already exists, not downloaded')
+        i += 1
         continue
 
     # acquire the image
@@ -78,6 +80,9 @@ for item in subject_list:
    
     try:
         im.save(file_name, exif=im.info.get('exif'))
+        i += 1
     except TypeError:
         im.save(file_name)
+        i += 1
         print('Subject ', item.id, ' no exif data recovered')
+print(i, ' files of ', len(subject_list), ' are in the directory at the end of downloading')
