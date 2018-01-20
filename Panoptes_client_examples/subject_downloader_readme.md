@@ -10,10 +10,9 @@ These all can be installed flawlessly via the Pycharm Edu package installer as w
 
 To use This script, the easiest way is to create a new directory where you want to download the subject images to, then copy this script to that directory, and run it from there.
 
-The first section requests your zooniverse credentials.  When entering your password, be advised that it shows on the interpreter screen.
-The script then asks for the subject set id number.  If you do not have rights to that subject set, it reports it as not found.
+The script asks for the subject set id number.  If the set id has been deleted, it reports it as not found.  Note: it appears subject sets other than those for your project can be downloaded, so be careful you have selected the correct one!
 
-The script then queries the subject set adding the all the members to a list. The script reports the number of subject in the subject set ready to download. This can take a few minutes for a large subject set!!!
+The script then queries the subject set adding the all the members to a list. The script reports the number of subjects in the subject set ready to download. This can take a few minutes for a large subject set!!!
 
 Once that task is finished, the script asks for the path of the directory to download to, with a shortcut for the current working directory.
 
@@ -21,4 +20,4 @@ Once that input has been tested as a valid location the script proceed to acquir
 
 The file_name is derived from the subject metadata.  Subjects with no Filename attribute will be saved as subject_number.jpg.  Note Filename is the default metadata field for images uploaded with either the subject_uploader.py in this repository or the project uploader using auto upload.  If your subjects have some other metadata fields you wish to use for the file name (eg 'file_name')you will need to modify this section.
 
-If a file of the same name exists in the directory as a file prepared for download, the download does not proceed for that subject - it is simple skipped. Thus if the process is interupted it can be restarted at any time with minimal loss of time and effort. 
+If a file of the same name exists in the directory as a file prepared for download, the download does not proceed for that subject - it is simply skipped. Thus if the process is interupted it can be restarted at any time with minimal loss of time and effort. 
