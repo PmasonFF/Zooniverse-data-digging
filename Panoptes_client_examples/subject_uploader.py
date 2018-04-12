@@ -1,11 +1,11 @@
-""" This version is written in Python 3.62,  it has been tested on Windows with only small
- subject sets, but appeared to work well.  Hopefully the OS related statements are suitably
- written to handle Mac path names."""
+""" This version is written in Python 3.62"""
 import os
 import panoptes_client
 from panoptes_client import SubjectSet, Subject, Project, Panoptes
 
+# set up your zooniverse sign-in credentials as environment variables:
 Panoptes.connect(username=os.environ['User_name'], password=os.environ['Password'])
+# edit the project slug for your project:
 project = Project.find(slug='pmason/fossiltrainer')
 
 while True:
