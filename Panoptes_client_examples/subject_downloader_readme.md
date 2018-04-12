@@ -20,6 +20,7 @@ where User_name and Password are replaced in the code with your zooniverse crede
 
 The script asks for the subject set id number.  If the set id has been deleted, it reports it as not found.  Note: it appears subject sets other than those for your project can be downloaded, so be careful you have selected the correct one!
 
+
 The script then queries the subject set adding the all the members to a list. The script reports the number of subjects in the subject set ready to download. This can take a few minutes for a large subject set!!!
 
 Once that task is finished, the script asks for the path of the directory to download to, with a shortcut for the current working directory.

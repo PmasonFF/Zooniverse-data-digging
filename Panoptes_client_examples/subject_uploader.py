@@ -3,7 +3,7 @@ import os
 import panoptes_client
 from panoptes_client import SubjectSet, Subject, Project, Panoptes
 
-# set up your zooniverse sign-in credentials as environment variables: 
+# set up your zooniverse sign-in credentials as environment variables:
 Panoptes.connect(username=os.environ['User_name'], password=os.environ['Password'])
 # edit the project slug for your project:
 project = Project.find(slug='pmason/fossiltrainer')

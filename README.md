@@ -249,9 +249,3 @@ It uses a simple user interface to input the user's credentials for the zooniver
 
 It can be stopped and restarted and will not duplicate files already successfully downloaded.
 
-
-
-
-
-
-
