@@ -3,7 +3,7 @@
 import os
 from panoptes_client import SubjectSet, Project, Panoptes
 
-# edit this line for your directory path:
+# edit this line for your directory path for where you want the listing to go:
 directory_path = r'C:\py\Data_digging\Panoptes_client'
 
 # set up your zooniverse sign-in credentials as environment variables:
