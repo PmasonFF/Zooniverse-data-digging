@@ -1,12 +1,12 @@
-""" This version is written in Python 3.62,  it has been tested on Windows with only small
- subject sets, but appeared to work well.  Hopefully the OS related statements are suitably
- written to handle Mac path names."""
+""" This version is written in Python 3.62"""
 import os
 from PIL import Image, ExifTags
 import panoptes_client
 from panoptes_client import SubjectSet, Subject, Project, Panoptes
 
+# set up your zooniverse sign-in credentials as environment variables:
 Panoptes.connect(username=os.environ['User_name'], password=os.environ['Password'])
+# edit the project slug for your project:
 project = Project.find(slug='pmason/fossiltrainer')
 
 while True:
@@ -30,16 +30,15 @@ set_name = input('Entry a name for the subject set to use or create:' + '\n')
 # The local Filename is the only metadata included here - if additional metadata is
 # required the dictionary subject_metadata can be expanded here with additional code
 # to pull the metadata from another source, or it can be updated later with an additional script.
-file_types = ['jpg', 'jpeg', 'png', 'gif', 'svg']
+file_types = ['jpg', 'jpeg', 'png']
 subject_metadata = {}
 for entry in os.listdir(location):
     if entry.partition('.')[2].lower() in file_types:
         try:
-            img = Image.open(entry)
-            exif = img._getexif()
-            exif = { ExifTags.TAGS[k]: v for k, v in img._getexif().items() if k in ExifTags.TAGS}
-            date_time = exif['DateTime']
-        except:
+            img = Image.open(location + os.sep + entry)
+            exif_dict = img._getexif()
+            date_time = exif_dict[306]
+        except KeyError:
             date_time = ''
         subject_metadata[entry] = {'Filename': entry, 'Site_Date': set_name, 'DateTime': date_time}
         # Add additional metadata dictionary items in form 'Next_field': ''  The values
