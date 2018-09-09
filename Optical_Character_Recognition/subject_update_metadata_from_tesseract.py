@@ -117,8 +117,7 @@ with open('OCR_results.csv', 'wt', newline='') as file:
                 if len(date_time) >= 10:
                     # if a date_time has been recovered and passed the testing update the subject metadata
                     subject.metadata['DateTime'] = date_time
-                    #  currently this save works with version 1.02 of the panoptes _client but doe not work
-                    #  with the current version 1.03 - an issue has been raised 09-09-2018
+                    # do the actual save
                     subject.save()
                     print(subject.id, subject.metadata['DateTime'], ' updated')
 
