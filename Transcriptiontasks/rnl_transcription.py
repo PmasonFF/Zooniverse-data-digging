@@ -1,7 +1,6 @@
 """This script was written in Python 3.6.6 "out of the box" and should run without any added packages."""
 import csv
 import json
-import sys
 import operator
 import os
 
@@ -24,31 +23,23 @@ def include(class_record):
         pass  # replace '001.01' with first version of the workflow to include.
     else:
         return False
- #   if 40000000 >= int(class_record['subject_ids']) >= 5000:
- #       pass  # replace upper and lower subject_ids to include only a specified range of subjects - this is
- #       # a very useful slice since subjects are selected together and can still be aggregated.
- #   else:
+    if 40000000 >= int(class_record['subject_ids']) >= 5000:
+        pass  # replace upper and lower subject_ids to include only a specified range of subjects - this is
+        # a very useful slice since subjects are selected together and can still be aggregated.
+    else:
         return False
     if not class_record['gold_standard'] and not class_record['expert']:
         pass  # this excludes gold standard and expert classifications - remove the "not" to select only
         # the gold standard or expert classifications
     else:
- #       return False    
- #   if '2100-00-10 00:00:00 UTC' >= class_record['created_at'] >= '2000-00-10 00:00:00 UTC':
- #       pass  # replace earliest and latest created_at date and times to select records commenced in a
- #       #  specific time period
-  #  else:
+        return False    
+    if '2100-00-10 00:00:00 UTC' >= class_record['created_at'] >= '2000-00-10 00:00:00 UTC':
+        pass  # replace earliest and latest created_at date and times to select records commenced in a
+        #  specific time period
+    else:
         return False
     # otherwise :
     return True
-
-
-def clear_unclear(string):
-    clean = ['[#unknown]', '[UNKNOWN]', '[unkow]', '[uknown]','[unkow]','[unnown]',
-             '[#no_collector]', '[no data]', '[not known]', '[not recorded]']
-    for text in clean:
-        string = string.replace(text, '')
-    return string
 
 
 # Set up the output file structure with desired fields:
@@ -72,9 +63,7 @@ with open(out_location, 'w', newline='', encoding='utf-8') as file:
 
     # this area for initializing counters, status lists and loading pick lists into memory:
     i = 0
-    j = 0
-    # In this area place lines that initialize variables or load dictionaries needed by the additional code blocks
-    digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    j = 0    
     #  open the zooniverse data file using dictreader,  and load the more complex json strings as python objects
     with open(location, encoding='utf-8') as f:
         r = csv.DictReader(f)
@@ -99,26 +88,16 @@ with open(out_location, 'w', newline='', encoding='utf-8') as file:
                 try:
                     image_name = metadata['image_name']
                 except KeyError:
-                    image_name = ''
-                try:
-                    folder = metadata['folder']
-                except KeyError:
-                    folder = ''
-                try:
-                    sub = metadata['subject_id']
-                except KeyError:
-                    sub = ''
+                    image_name = ''                
 
                 # reset the field variables for each new row
                 t1 = ''
                 t2 = ''
-                t3 = ''
-                t4 = ''
+                t3 = ''               
               
                 d1 = ''
                 d2 = ''
-                d3 = ''
-                date = ''
+                d3 = ''               
             
                 # loop over the tasks
                 for task in annotations:
@@ -133,16 +112,7 @@ with open(out_location, 'w', newline='', encoding='utf-8') as file:
                                 t1 = l1[0] + l1[1] + ' ' + l1[2]
                     except KeyError:
                         pass 
-
-
-#                   try:
-#                        if task['task'] == 'T0':
-#                            if task['value'] is not None:
-#                                t1_raw = str(task['value'])
-#                                t1 = t1_raw.replace('\n', ' ').strip()
-#                    except KeyError:
-#                        pass
-
+                  
                     # Free Transcription Location?
                     try:
                         if task['task'] == 'T3':
@@ -168,67 +138,46 @@ with open(out_location, 'w', newline='', encoding='utf-8') as file:
                     try:
                         if task['task'] == 'T2':
                             if task['value'] is not None:
-                                d1 = str(task['value'][0]['value'])
-                                if d1 == 'a005a674b228e':
-                                        d1 = ''
+                                d1 = str(task['value'][0]['value'])                               
 
                     except KeyError:
                         pass
 
-#                    # Dropdown Era?
-#                    try:
-#                        if task['task'] == 'T6':
-#                            if task['value'] is not None:
-#                                d2 = str(task['value'][0]['value'])
-#                                if d2 == 'a005a674b228e':
-#                                        d2 = ''
-#                    except KeyError:
-#                        pass
-#    
-#                    # Dropdown Age?
-#                    try:
-#                        if task['task'] == 'T12':
-#                            if task['value'] is not None:
-#                                d3 = str(task['value'][0]['value'])
-#                                if d3 == 'a005a674b228e':
-#                                        d3 = ''
-#                    except KeyError:
-#                        pass
-#          
+                    # Dropdown Era?
+                    try:
+                        if task['task'] == 'T6':
+                            if task['value'] is not None:
+                                d2 = str(task['value'][0]['value'])                                
+                    except KeyError:
+                        pass
+    
+                    # Dropdown Age?
+                    try:
+                        if task['task'] == 'T12':
+                            if task['value'] is not None:
+                                d3 = str(task['value'][0]['value'])                                
+                    except KeyError:
+                        pass          
 
                 # This set up the writer to match the field names above and the variable names of their values:
-                writer.writerow({'classification_id': row['classification_id'],
-#                                'Scientific_Name': scientific_name,
+                writer.writerow({'classification_id': row['classification_id'],                               
                                  'subject_id': row['subject_ids'],
                                  'user_name': row['user_name'],
                                  'workflow_id': row['workflow_id'],
                                  'workflow_version': row['workflow_version'],
                                  'Country': d1,
+                                 'Location': t2,
                                  'Collector': t3,
                                  'Species': t1,
                                  'Era': d2,
                                  'Age': d3,
-                                 'image': t4,
+                                 'image': image_name,
                                  })
 
                 print(j)  # just so we know progress is being made
         # This area prints some basic process info and status
         print(i, 'lines read and inspected', j, 'records processed and copied')
 
-['classification_id',
-                  'subject_id',
-                  'user_name',
-                  'workflow_id',
-                  'workflow_version',
-                  'created_at',
-                  'Country',
-                  'Location',
-                  'Collector',
-                  'Species'
-                  'Era',
-                  'Age',
-                  'image',
-                  ]
 
 # This section defines a sort function. Note the last parameter is the field to sort by where fields
 # are numbered starting from '0'
