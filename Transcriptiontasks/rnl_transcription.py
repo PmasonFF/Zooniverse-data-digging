@@ -94,7 +94,7 @@ with open(out_location, 'w', newline='', encoding='utf-8') as file:
 
                 metadata = subject_data[(row['subject_ids'])]
                 try:
-                    image_name = metadata['image_name']
+                    image_name = metadata['Filename']
                 except KeyError:
                     image_name = ''                
 
