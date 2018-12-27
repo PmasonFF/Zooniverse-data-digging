@@ -42,6 +42,14 @@ def include(class_record):
     return True
 
 
+def clear_unclear(string):
+    clean = ['[#unknown]', '[UNKNOWN]', '[unkow]', '[uknown]','[unkow]','[unnown]',
+             '[#no_collector]', '[no data]', '[not known]', '[not recorded]']
+    for text in clean:
+        string = string.replace(text, '')
+    return string
+
+
 # Set up the output file structure with desired fields:
 # prepare the output file and write the header
 with open(out_location, 'w', newline='', encoding='utf-8') as file:
