@@ -110,50 +110,54 @@ with open(out_location, 'w', newline='', encoding='utf-8') as file:
                 # loop over the tasks
                 for task in annotations:
 
-                    # Free Transcription Scientific name?
-                    try:
-                        if task['task'] == 'T0':
-                            if task['value'] is not None:
-                                t1_raw = str(task['value']).replace('\n', ' ').strip()
-                                l1 = sorted(
-                                    [t1_raw.partition(';')[0], t1_raw.partition(';')[1], t1_raw.partition(';')[2]])
-                                t1 = l1[0] + l1[1] + ' ' + l1[2]
-                    except KeyError:
-                        pass 
-                  
-                    # Free Transcription Location?
-                    try:
-                        if task['task'] == 'T3':
-                            if task['value'] is not None:
-                                t2_raw = str(task['value'])
-                                t2 = t2_raw.replace('\n', ' ').strip()
-                    except KeyError:
-                        pass
+                    # loop over the combo task
+                    try
+                        if task['task] == 'TX'
+                            for combo_task in task['value']                            
+                                # Free Transcription Scientific name?
+                                try:
+                                    if combo_task['task'] == 'TY':
+                                        if combo_task['value'] is not None:
+                                            t1_raw = str(combo_task['value']).replace('\n', ' ').strip()
+                                            l1 = sorted(
+                                                [t1_raw.partition(';')[0], t1_raw.partition(';')[1], t1_raw.partition(';')[2]])
+                                            t1 = l1[0] + l1[1] + ' ' + l1[2]
+                                except KeyError:
+                                    pass 
 
-                    # Free Transcription Collector?
-                    try:
-                        if task['task'] == 'T4':
-                            if task['value'] is not None:
-                                t3_meta = str(task['value']).replace('\n', '').strip()
-                                t3_raw = clear_unclear(t3_meta)
-                                l3 = sorted(
-                                    [t3_raw.partition(';')[0], t3_raw.partition(';')[1], t3_raw.partition(';')[2]])
-                                t3 = l3[0] + l3[1] + ' ' + l3[2]
-                    except KeyError:
-                        pass
+                                # Free Transcription Location?
+                                try:
+                                    if combo_task['task'] == :
+                                        if combo_task['value'] is not None:
+                                            t2_raw = str(combo_task['value'])
+                                            t2 = t2_raw.replace('\n', ' ').strip()
+                                except KeyError:
+                                    pass
 
-                   # Dropdown Country?
-                    try:
-                        if task['task'] == 'T2':
-                            if task['value'] is not None:
-                                d1 = str(task['value'][0]['value'])                               
+                                # Free Transcription Collector?
+                                try:
+                                    if combo_task['task'] == 'TW':
+                                        if combo_task['value'] is not None:
+                                            t3_meta = str(combo_task['value']).replace('\n', '').strip()
+                                            t3_raw = clear_unclear(t3_meta)
+                                            l3 = sorted(
+                                                [t3_raw.partition(';')[0], t3_raw.partition(';')[1], t3_raw.partition(';')[2]])
+                                            t3 = l3[0] + l3[1] + ' ' + l3[2]
+                                except KeyError:
+                                    pass
+
+                               # Dropdown Country?
+                                try:
+                                    if combo_task['task'] == 'TV':
+                                        if combo_task['value'] is not None:
+                                            d1 = str(combo_task['value'][0]['value'])                               
 
                     except KeyError:
                         pass
 
                     # Question Era?
                     try:
-                        if task['task'] == 'T6':
+                        if task['task'] == 'TU':
                             if task['value'] is not None:
                                 q1 = str(task['value']                            
                     except KeyError:
@@ -161,7 +165,7 @@ with open(out_location, 'w', newline='', encoding='utf-8') as file:
     
                     # Question Age?
                     try:
-                        if task['task'] == 'T12':
+                        if task['task'] == 'TT':
                             if task['value'] is not None:
                                 q2 = str(task['value']                              
                     except KeyError:
