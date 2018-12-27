@@ -1,4 +1,4 @@
-"""This script was written in Python 3.6.6 "out of the box" and should run without any added packages."""
+t"""This script was written in Python 3.6.6 "out of the box" and should run without any added packages."""
 import csv
 import json
 import operator
@@ -58,10 +58,10 @@ with open(out_location, 'w', newline='', encoding='utf-8') as file:
                   'user_name',
                   'workflow_id',
                   'workflow_version',
+                  'Scientific_name',
                   'Country',
                   'Location',
-                  'Collector',
-                  'Species',
+                  'Collector',                  
                   'Era',
                   'Age',
                   'image',
@@ -104,13 +104,13 @@ with open(out_location, 'w', newline='', encoding='utf-8') as file:
                 t3 = ''               
               
                 d1 = ''
-                d2 = ''
-                d3 = ''               
+                q1 = ''
+                q2 = ''               
             
                 # loop over the tasks
                 for task in annotations:
 
-                    # Free Transcription Species?
+                    # Free Transcription Scientific name?
                     try:
                         if task['task'] == 'T0':
                             if task['value'] is not None:
@@ -151,19 +151,19 @@ with open(out_location, 'w', newline='', encoding='utf-8') as file:
                     except KeyError:
                         pass
 
-                    # Dropdown Era?
+                    # Question Era?
                     try:
                         if task['task'] == 'T6':
                             if task['value'] is not None:
-                                d2 = str(task['value'][0]['value'])                                
+                                q1 = str(task['value']                            
                     except KeyError:
                         pass
     
-                    # Dropdown Age?
+                    # Question Age?
                     try:
                         if task['task'] == 'T12':
                             if task['value'] is not None:
-                                d3 = str(task['value'][0]['value'])                                
+                                q2 = str(task['value']                              
                     except KeyError:
                         pass          
 
@@ -173,12 +173,12 @@ with open(out_location, 'w', newline='', encoding='utf-8') as file:
                                  'user_name': row['user_name'],
                                  'workflow_id': row['workflow_id'],
                                  'workflow_version': row['workflow_version'],
+                                 'Scientific_name': t1,
                                  'Country': d1,
                                  'Location': t2,
-                                 'Collector': t3,
-                                 'Species': t1,
-                                 'Era': d2,
-                                 'Age': d3,
+                                 'Collector': t3,                                 
+                                 'Era': q1,
+                                 'Age': q2,
                                  'image': image_name,
                                  })
 
