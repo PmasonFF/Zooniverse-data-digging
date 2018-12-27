@@ -1,4 +1,4 @@
-t"""This script was written in Python 3.6.6 "out of the box" and should run without any added packages."""
+"""This script was written in Python 3.6.6 "out of the box" and should run without any added packages."""
 import csv
 import json
 import operator
@@ -43,7 +43,7 @@ def include(class_record):
 
 
 def clear_unclear(string):
-    clean = ['[#unknown]', '[UNKNOWN]', '[unkow]', '[uknown]','[unkow]','[unnown]',
+    clean = ['[#unknown]', '[UNKNOWN]', '[unkow]', '[uknown]', '[unkow]', '[unnown]',
              '[#no_collector]', '[no data]', '[not known]', '[not recorded]']
     for text in clean:
         string = string.replace(text, '')
@@ -111,23 +111,24 @@ with open(out_location, 'w', newline='', encoding='utf-8') as file:
                 for task in annotations:
 
                     # loop over the combo task
-                    try
-                        if task['task] == 'TX'
-                            for combo_task in task['value']                            
+                    try:
+                        if task['task'] == 'TX':
+                            for combo_task in task['value']:                            
                                 # Free Transcription Scientific name?
                                 try:
                                     if combo_task['task'] == 'TY':
                                         if combo_task['value'] is not None:
                                             t1_raw = str(combo_task['value']).replace('\n', ' ').strip()
                                             l1 = sorted(
-                                                [t1_raw.partition(';')[0], t1_raw.partition(';')[1], t1_raw.partition(';')[2]])
+                                                [t1_raw.partition(';')[0], t1_raw.partition(';')[1],
+                                                 t1_raw.partition(';')[2]])
                                             t1 = l1[0] + l1[1] + ' ' + l1[2]
                                 except KeyError:
                                     pass 
 
                                 # Free Transcription Location?
                                 try:
-                                    if combo_task['task'] == :
+                                    if combo_task['task'] == 'TZ':
                                         if combo_task['value'] is not None:
                                             t2_raw = str(combo_task['value'])
                                             t2 = t2_raw.replace('\n', ' ').strip()
@@ -141,16 +142,19 @@ with open(out_location, 'w', newline='', encoding='utf-8') as file:
                                             t3_meta = str(combo_task['value']).replace('\n', '').strip()
                                             t3_raw = clear_unclear(t3_meta)
                                             l3 = sorted(
-                                                [t3_raw.partition(';')[0], t3_raw.partition(';')[1], t3_raw.partition(';')[2]])
+                                                [t3_raw.partition(';')[0], t3_raw.partition(';')[1],
+                                                 t3_raw.partition(';')[2]])
                                             t3 = l3[0] + l3[1] + ' ' + l3[2]
                                 except KeyError:
                                     pass
 
-                               # Dropdown Country?
+                                # Dropdown Country?
                                 try:
                                     if combo_task['task'] == 'TV':
                                         if combo_task['value'] is not None:
-                                            d1 = str(combo_task['value'][0]['value'])                               
+                                            d1 = str(combo_task['value'][0]['value']) 
+                                except KeyError:
+                                    pass
 
                     except KeyError:
                         pass
@@ -159,7 +163,7 @@ with open(out_location, 'w', newline='', encoding='utf-8') as file:
                     try:
                         if task['task'] == 'TU':
                             if task['value'] is not None:
-                                q1 = str(task['value']                            
+                                q1 = str(task['value'])                           
                     except KeyError:
                         pass
     
@@ -167,7 +171,7 @@ with open(out_location, 'w', newline='', encoding='utf-8') as file:
                     try:
                         if task['task'] == 'TT':
                             if task['value'] is not None:
-                                q2 = str(task['value']                              
+                                q2 = str(task['value'])                              
                     except KeyError:
                         pass          
 
