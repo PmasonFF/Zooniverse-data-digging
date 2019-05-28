@@ -1,4 +1,4 @@
-## org_workflow_stats_process_bar.py
+## org_workflow_stats_expanded.py
 
 This script was written in Python 3.7 so as to work for Python 2.7 or Python 3+
 It requires panoptes-client to be installed and for Python 2.7 the package futures as well.
@@ -6,7 +6,7 @@ It requires panoptes-client to be installed and for Python 2.7 the package futur
 The script assumed the user has their zooniverse credentials set up in their operating system varaibles as USERNAME and PASSWORD.  All public projects do not require login; private projects will not be shown with out login.
 
 It uses arguments to pass required details to the script. These are detailed below. A typical command line wuld be
-$ Python org_workflow_stats_process_bar.py -o 16 -w workflow_list.csv -s output_file.csv
+$ Python org_workflow_stats_expanded.py -o 16 -w workflow_list.csv -s output_file.csv
 This example uses a workflow list located in the directory the script is run from (working directory) and saves the listing to a file there.
 
 ````
