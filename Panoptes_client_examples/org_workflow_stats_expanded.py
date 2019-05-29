@@ -160,7 +160,7 @@ if project_file != 'None':
         sys.stdout.write('processing..')
         sys.stdout.flush()
         try:
-            build_part = "{:<8},{}".format(prjct, Project(int(prjct)).display_name) + '\n'
+            build_part = u"{:<8},{}".format(prjct, Project(int(prjct)).display_name) + '\n'
             build_part += "{:<12},{:<14},{:<28},{:<28},{:<10},{}".format('Project_id', 'Workflow_id',
                                                                          'Created date',
                                                                          'Finished date', 'Subjects',
@@ -200,7 +200,7 @@ for prjct in all_projects:
     sys.stdout.write('processing..')
     sys.stdout.flush()
     try:
-        build_part += "{:<8}{}".format(prjct.id, prjct.display_name) + '\n'
+        build_part += u"{:<8}{}".format(prjct.id, prjct.display_name) + '\n'
         build_part += "{:<12},{:<14},{:<28},{:<28},{:<10},{}".format('Project_id', 'Workflow_id', 'Created date',
                                                                      'Finished date', 'Finished date', 'Subjects',
                                                                      'Workflow name') + '\n'
