@@ -11,6 +11,8 @@ Note the subject set name is optional (will default to "New subject set"0 and th
 For support contact @Pmason through zooniverse.
 
 
+
+````
 usage: upload_from_manifest_skinks.py [-h] --manifest MANIFEST
                                       --image_directory IMAGE_DIRECTORY
                                       [--subject_set SUBJECT_SET]
@@ -64,4 +66,4 @@ optional arguments:
                         directory) and the file name. example -s
                         some_path\summary_file.csv
 
-Process finished with exit code 0
+````
