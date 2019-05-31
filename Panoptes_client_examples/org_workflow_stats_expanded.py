@@ -103,9 +103,9 @@ if workflow_file != 'None':
     print(build_part)
     if save:
         build_file += build_part
-    build_part = "{:<12},{:<14},{:<28},{:<28},{:<10},{}".format('Project_id', 'Workflow_id', 'Created date',
-                                                                'Finished date', 'Finished date', 'Subjects',
-                                                                'Workflow name') + '\n'
+    build_part = "{:<12},{:<14},{:<28},{:<28},{:<10},{:12},{}".format('Project_id', 'Workflow_id', 'Created date',
+                                                                      'Finished date', 'Subjects', 'Retirement',
+                                                                      'Workflow name') + '\n'
     with open(workflow_file, 'r') as w_file:
         r = csv.DictReader(w_file)
         workflow_list = []
@@ -126,10 +126,12 @@ if workflow_file != 'None':
             finished_at = wrkflw.finished_at
             if finished_at is None:
                 finished_at = ' '
-            build_part += u"{:<12},{:<14},{:<28},{:<28},{:<10},{}".format(project_id, wrkflw.id,
-                                                                          wrkflw.created_at, finished_at,
-                                                                          wrkflw.subjects_count,
-                                                                          wrkflw.display_name) + '\n'
+            build_part += u"{:<12},{:<14},{:<28},{:<28},{:<10},{:<12},{}".format(project_id, wrkflw.id,
+                                                                                 wrkflw.created_at,
+                                                                                 finished_at, wrkflw.subjects_count,
+                                                                                 wrkflw.retirement['options'][
+                                                                                     'count'],
+                                                                                 wrkflw.display_name) + '\n'
     print('\n')
     for item in not_found:
         build_part += "Workflow not found in specified organization: {}".format(item) + '\n'
@@ -160,11 +162,12 @@ if project_file != 'None':
         sys.stdout.write('processing..')
         sys.stdout.flush()
         try:
-            build_part = u"{:<8},{}".format(prjct, Project(int(prjct)).display_name) + '\n'
-            build_part += "{:<12},{:<14},{:<28},{:<28},{:<10},{}".format('Project_id', 'Workflow_id',
-                                                                         'Created date',
-                                                                         'Finished date', 'Subjects',
-                                                                         'Workflow name') + '\n'
+            build_part = "{:<8},{}".format(prjct, Project(int(prjct)).display_name) + '\n'
+            build_part += "{:<12},{:<14},{:<28},{:<28},{:<10},{:12},{}".format('Project_id', 'Workflow_id',
+                                                                               'Created date',
+                                                                               'Finished date', 'Subjects',
+                                                                               'Retirement',
+                                                                               'Workflow name') + '\n'
             for workflow_id, project_id in all_workflows:
                 i += 1
                 if i % 5 == 0:
@@ -175,9 +178,13 @@ if project_file != 'None':
                     finished_at = wrkflw.finished_at
                     if finished_at is None:
                         finished_at = ' '
-                    build_part += u"{:<12},{:<14},{:<28},{:<28},{:<10},{}".format(prjct, wrkflw.id, wrkflw.created_at,
-                                                                                  finished_at, wrkflw.subjects_count,
-                                                                                  wrkflw.display_name) + '\n'
+                    build_part += u"{:<12},{:<14},{:<28},{:<28},{:<10},{:<12},{}".format(prjct, wrkflw.id,
+                                                                                         wrkflw.created_at,
+                                                                                         finished_at,
+                                                                                         wrkflw.subjects_count,
+                                                                                         wrkflw.retirement['options'][
+                                                                                             'count'],
+                                                                                         wrkflw.display_name) + '\n'
         except panoptes_client.panoptes.PanoptesAPIException:
             build_part = "{:<8} Project not found in specified organization".format(prjct) + '\n'
         print('\n')
@@ -200,10 +207,10 @@ for prjct in all_projects:
     sys.stdout.write('processing..')
     sys.stdout.flush()
     try:
-        build_part += u"{:<8}{}".format(prjct.id, prjct.display_name) + '\n'
-        build_part += "{:<12},{:<14},{:<28},{:<28},{:<10},{}".format('Project_id', 'Workflow_id', 'Created date',
-                                                                     'Finished date', 'Finished date', 'Subjects',
-                                                                     'Workflow name') + '\n'
+        build_part += "{:<8}{}".format(prjct.id, prjct.display_name) + '\n'
+        build_part += "{:<12},{:<14},{:<28},{:<28},{:<10},{:12},{}".format('Project_id', 'Workflow_id', 'Created date',
+                                                                           'Finished date', 'Subjects', 'Retirement',
+                                                                           'Workflow name') + '\n'
         for workflow_id, project_id in all_workflows:
             i += 1
             if i % 5 == 0:
@@ -214,9 +221,12 @@ for prjct in all_projects:
                 finished_at = wrkflw.finished_at
                 if finished_at is None:
                     finished_at = ' '
-                build_part += u"{:<12},{:<14},{:<28},{:<28},{:<10},{}".format(prjct.id, wrkflw.id, wrkflw.created_at,
-                                                                              finished_at, wrkflw.subjects_count,
-                                                                              wrkflw.display_name) + '\n'
+                build_part += u"{:<12},{:<14},{:<28},{:<28},{:<10},{:<12},{}".format(prjct.id, wrkflw.id,
+                                                                                     wrkflw.created_at,
+                                                                                     finished_at, wrkflw.subjects_count,
+                                                                                     wrkflw.retirement['options'][
+                                                                                         'count'],
+                                                                                     wrkflw.display_name) + '\n'
     except panoptes_client.panoptes.PanoptesAPIException:
         build_part += str(sys.exc_info()[1]) + ". You may not have permission to view that project" + '\n'
     build_part += '\n'
