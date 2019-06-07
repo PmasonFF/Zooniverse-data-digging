@@ -5,6 +5,7 @@ import textwrap
 import csv
 import os
 import io
+from datetime import datetime
 import panoptes_client
 from panoptes_client import Panoptes, Project, Subject, SubjectSet
 
@@ -60,7 +61,7 @@ parser.add_argument('--save_to', '-f', required=False, default='None',
                     where the summary of the subjects uploaded will be saved in csv format.
                     Give the full path (from the directory where this script is run, or from the
                     root directory) and the file name. 
-                    example -s some_path\summary_file.csv """)
+                    example -f some_path\summary_file.csv """)
 args = parser.parse_args()
 
 manifest = args.manifest
@@ -163,7 +164,7 @@ for metadata in manifest_list:
             subject.save()
             subject_set.add(subject.id)
             new_subjects += 1
-            build_part = '{} successfully uploaded'.format(working_on) + '\n'
+            build_part = '{} successfully uploaded at {}'.format(working_on, str(datetime.now())[0:19]) + '\n'
         except panoptes_client.panoptes.PanoptesAPIException:
             failed_subjects += 1
             build_part = 'An error occurred during the upload of {}'.format(working_on) + '\n'
@@ -186,3 +187,4 @@ if save:
 if save:
     output(save_to, build_file)
 #  ____________________________________________________________________________________________________________________
+
