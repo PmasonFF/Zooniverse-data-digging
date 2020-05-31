@@ -13,7 +13,7 @@ Panoptes.connect(username=os.environ['User_name'], password=os.environ['Password
 #  modify subject set name as needed:
 set_id = '12345'
 
-# This section sets up a subject set
+# This section verifies and finds the subject set
 try:
     # check if the subject set already exits
     subject_set = SubjectSet.find(set_id)
@@ -26,5 +26,5 @@ with open(manifest_file, 'r') as mani_file:
     r = csv.DictReader(mani_file)
     for line in r:
         #  modify the next three lines with the appropriate column headers from the manifest file
-        subject_set.add(line['subject_id'])
+        subject_set.add(line['subject_id'])  #  note subjects can also be unlinked by changing "add" to "remove" in this line
         print(line['subject_id'])
