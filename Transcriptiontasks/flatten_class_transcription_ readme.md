@@ -36,7 +36,7 @@ Block 2   ONE use only of multiple instances (colours) a drawing tool type to ma
 Block 3 One tool (type and colour) used a known maximum number of times on one subject.  Each use must be separately placed from top to bottom so that a simple sort by vertical location places each drawing and its sub-task transcription in the appropriate output column. (example - sequential entries 
 such as logs or diaries)
 
-## The Demo:
+## The Demo flatten_class_transcription_demo.py:
 
 The demo flatten_class_transcription_demo.py takes a classification where up to five dates have been marked using one tool and transcribed two ways in a two step sub-task - first a verbatim transcription, then as a specific date format. Each tool usage is sorted by its location from the top of the page down and each location and the two dates are given their columns in the output.  Then a simple transcription of one specific line is pulled out and given its own column as well. This results in a csv file where each transcription is in a designated column.  The output file is in a format that can be directly reconciled with Notes from Natures reconcile.py appropriately set up with the csv file parameter and the column names we want to reconcile. See the command line below.
 
