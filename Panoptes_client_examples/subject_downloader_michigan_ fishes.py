@@ -51,8 +51,8 @@ count = 0
 
 for subject in subject_set.subjects:
     count += 1
-    if count == 10:
-        break
+    # if count == 10:
+    #    break
     print('\r', 'Found subject:', count, '   ', subject.id, end='')
     subject_list.append(subject)
 print("\r", '')
