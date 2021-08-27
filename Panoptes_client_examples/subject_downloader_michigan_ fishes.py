@@ -91,18 +91,21 @@ for item in subject_list:
     # acquire the images
     try:
         if flag == 'multiple':
-            with requests.get(list(item.locations[0].values())[0], stream=True) as r_1:
-                with open(file_name_1, 'wb') as f_1:
-                    shutil.copyfileobj(r_1.raw, f_1, length=16 * 1024 * 1024)
-            with requests.get(list(item.locations[1].values())[0], stream=True) as r_2:
-                with open(file_name_2, 'wb') as f_2:
-                    shutil.copyfileobj(r_2.raw, f_2, length=16 * 1024 * 1024)
+            if not os.path.isfile(file_name_1):
+                with requests.get(list(item.locations[0].values())[0], stream=True) as r_1:
+                    with open(file_name_1, 'wb') as f_1:
+                        shutil.copyfileobj(r_1.raw, f_1, length=16 * 1024 * 1024)
+            if not os.path.isfile(file_name_2):
+                with requests.get(list(item.locations[1].values())[0], stream=True) as r_2:
+                    with open(file_name_2, 'wb') as f_2:
+                        shutil.copyfileobj(r_2.raw, f_2, length=16 * 1024 * 1024)
             print('\r', 'Subject ', item.id, '   ', 'Acquired files', file_name_1, '   ', file_name_2, end='')
             saved_multiple += 1
         else:
-            with requests.get(list(item.locations[0].values())[0], stream=True) as r_1:
-                with open(file_name_1, 'wb') as f_1:
-                    shutil.copyfileobj(r_1.raw, f_1, length=16 * 1024 * 1024)
+            if not os.path.isfile(file_name_1):
+                with requests.get(list(item.locations[0].values())[0], stream=True) as r_1:
+                    with open(file_name_1, 'wb') as f_1:
+                        shutil.copyfileobj(r_1.raw, f_1, length=16 * 1024 * 1024)
             print('\r', 'Subject ', item.id, '   ', 'Acquired file', file_name_1, end='')
             saved_single += 1
     except IOError:
