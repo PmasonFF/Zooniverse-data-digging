@@ -21,9 +21,9 @@ parser = argparse.ArgumentParser(
     formatter_class=argparse.RawDescriptionHelpFormatter,
     fromfile_prefix_chars='@',
     description=textwrap.dedent("""
-            This script is an uploader customized for the project skink-spotter-nz.
-            It requires a manifest in a specific format. It builds multiframe image 
-            subjects with the metadata a subject number and the image filenames.
+            This script is an uploader for a variable number of multiframe images.
+            It requires a manifest in a specific format. It creates multiframe zooniverse
+            subjects with the metadata a user supplied subject number and the image filenames.
             Subjects are uploaded to a specified subject set that exists or is created 
             in the project. The script reports errors that occurred and is restartable
             without subject duplication. Optionally a summary file of all subjects 
@@ -75,7 +75,7 @@ if '.csv' in save_to:
 
 # parts of the optional summary file are built and either printed or added to the summary file
 build_file = ''
-build_part = "Subject uploader for project 'jovirens/skink-spotter-nz'" + '\n'
+build_part = "Subject uploader for project 'pmason/fossiltrainer'" + '\n'
 build_part += "Manifest = {}   Image Directory = {}    Subject_Set Name = {}   Save location = {}" \
                   .format(manifest, directory, set_name, save_to) + '\n' + '\n'
 
@@ -102,7 +102,6 @@ with open(manifest, 'r') as m_file:
 
 # connection and login for the project:
 Panoptes.connect(username=os.environ['User_name'], password=os.environ['Password'])
-# project = Project.find(slug='jovirens/skink-spotter-nz')
 project = Project.find(slug='pmason/fossiltrainer')
 
 #  This section sets up a subject set
