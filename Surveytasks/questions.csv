@@ -1,0 +1,6 @@
+Question,Multiple,Required,Answers,Include,Exclude
+How many?,N,Y,1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11-50; 51+,,Human; Nothing here
+What behaviors do you see?,Y,Y,Resting; Standing; Moving; Eating; Interacting,,Human; Nothing here
+Are there any young present?,N,N,Yes; No,,Nothing here
+Do you see any horns?,N,N,Yes; No,Eland; Hartebeest; Impala; Kudu,
+Don't care?,N,Y,Yes; No,Honey Badger,

@@ -1,0 +1,6 @@
+subject_ids,Filename,total_class,species_class,status,choice,choice v_f,how_many,how_many v.f.,Resting,Standing,Moving,Eating,Interacting,young-Yes,young-No,horns-Yes,horns-No,care?-YES,care?-NO
+13118615,buffalo-1.jpg,13,10,C0 - concensus,NOTHINGHERE,77,,,,,,,,,,,,,
+13118616,caracal-3.jpg,14,13,C0 - concensus,CARACAL,93,1,93,,93,,,,,93,,,,
+13118617,civet-3.jpg,13,13,C0 - concensus,CIVET,100,1,92,,92,,,8,8,77,,,,
+13118618,genet-2.jpg,13,11,C0 - concensusaugmented,GENET,85,1,100,,38,61,,,,93,,,,
+13118619,aardvark-2.jpg,14,14,C0 - concensus,AARDVARK,100,1,100,7,,93,,7,,86,,,,
