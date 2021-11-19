@@ -4,96 +4,157 @@ In the Classification download, the user's responses to each task are recorded i
 
 The form of the individual dictionaries for the tasks depends very much on what type of task it is - a question, drawing tool, transcription or survey task.
 
-This set of scripts is for a survey task.
+This set of scripts is for a generic survey task. It can be combined with task blocks for other task types – see the other task building block scripts.  To interpret the questions and structure the output files, we need to know all about the project details - fortunately most of what we need to know is conveniently summarized in the questions.csv file used to build the project. With a copy of that file included in the file locations list, most of the heavy lifting for the details is done.  
 
-## Flattening the survey data:
+This script will flatten the classification file so the responses are shown in a neat column format with one column per question.  It will aggregate the results showing the vote fraction for each possible response for each species reports for each subject.  There will be one line for each subject-choice reported.  The aggregated output is not intended for direct Human readability, but it is then filtered to determine consensus based on gates input into the script, as described below.  The filtered output shows the results for those subject-choices that meet the minimum limit of consensus, and those subjects that remain indeterminate for one of several reasons.  Finally as an option, those subjects which are not resolved by consensus can be added to a new subject set which can then be linked to the existing workflow or a customized workflow for further review using zooniverse.
 
-To start, a copy of flatten_class_frame.py is modified with a block added to deal with the survey task.  As usual with this building block approach, the file locations, any tests for which classificiation records to include (usually a specific workflow_id and workflow_version), and the fieldnames for the output file need to be hardcoded.
+In order for the script to connect with and log on to zooniverse the username and password of a project collaborator must be available to the script.  There are various ways of providing this
 
-For survey tasks though, the specific task number (eg T0 in this case) is used to recognize the survey task and initiate the block's action so that needs to be determined from the data and modified in the survey block.  As well, to interpret the questions and structure the output files, we need to know all about the project details - fortunately most of what we need to know is conveniently summarized in the questions.csv file used to build the project. With a copy of that file included in the file locations list, most of the heavy lifting for the details is done - though we still need to chose field names for the output columns we want and link those with the appropriate answer variables in the writer statements. For later ease of aggregation one field called "all_choices" should be provided for a flag indicating multiple choices in a classification and the answer-vector for all possible questions and responses for that classification. There must also be a field for 'subject_choice' which is a simple concatenation of the subject and choice.
+–	The worst way is to simply hardcode it in lines 647,648 which is not secure since the password is clearly visible to anyone with the script.
 
-One other major change from the usual flatten_class_frame.py setup is we want to write an output line for each subject-species combination recorded in each classification.  This requires moving the write action **inside** the block analysing the survey task - so any other task blocks to analyse any other tasks in the project, or provide any other general utilities must be inserted ahead of the survey task block.
+–	Using an interactive input every time it is needed (this is not convenient and unfortunately this echos the password to the screen and is not secure against shoulder surfers).
 
-The output from this basic survey task block has three sections - One section is the normal columns identifying classification, user and subject data, and the analysis of any other tasks we added in for this project. The second section is the flattened survey data in the columns as chosen above. This section can look (by choosing the order and text for the fieldnames) exactly like the output for B Simmons' aggregate_survey.py which is in survey-classifications_annotations_1lineeach.csv.  The third section is the essentially the same information in a form easy to aggregate. It has all the survey questions and their possible responses in a answer-vector format.  This section also must have a field for 'subject_choice' for the following aggregation to work. 
+–	The username and password can be set up as environmental variables in the OS – this is only as secure as Admin privileges on your computer since the environmental variables are stored in plain text.
 
-## Aggregating the survey data:
+–	The last way as used in this script is to collect the username and password once using an interactive input , then encrypt it and store it in a file in the working directory.  To this end there is a small script run_config.py that must be placed in the same directory as this survey task script.  The first time the survey task script runs it will call run_config.py which will generate a new encryption key (which will be stored in run_config.py) and allow you to generate a new file run_config.csv that will store your encrypted password and some other details.  Note that anyone with **both** the current file run_config.csv  and the version of run_config.py that produced it can generate the password in plain text, but both of the matching pair of files are required. 
 
-### Sorting by subject_choice
 
-One of the downsides for **not** using something like pandas is that we need to write our own aggregation routines to select out records by a specific field and accumulate over those fields we want to aggregate.
+## Setting up the Flattening script:
 
-The first step is we need to sort the entire flattened file on the fields we are going to select on - in this case 'subject-choice' The next section is a general sort routine which is quite useful in itself.  We simply run it on the output file of the first section.  The routine automatically deletes the unsorted file but this can be easily modified if their is a reason to keep the unsorted file.
+To set up this script, the following changes need to be made based on your project details:
 
-### Build a record of total classifications
+1) line 36 directory = Runconfig().working_directory
 
-To calculate vote fractions for a choice or response, we will need the total number of classifications made and if any of those classifications identified more than one choice within the classification.  The next section simply aggregates the classifications done and a counter that will alert us to multiple choice classifications went we attempt to interpret and filter the results.
+The directory where the classification data, a copy of the questions.csv, and output files will reside. This Path and file name can be hardcoded here or pulled from a config file built with a copy of the script run_config.py that is also used to securely store credentials for logging on to zooniverse.  An example of a hardcoded directory is:
+ 
+    line 36 directory = r'C:\py\My_Survey_task_data directory'    
+note the "r" prevents the slashes from being escape sequences
 
-### Aggregate over subject-choice
+2) line 39 question_file = 'questions.csv'
 
-We build an old fashioned aggregation routine which calculates the total number of classifications where each choice or response was made.  That number divided by the classifications made and converted to percent becomes a vote-fraction for that choice or response for that subject-choice.  These are output as an aggregated answer-vector which reports the percent vote fraction for every possible question/response for each subject-choice.
+The name of the questions file used to set up the survey task for the data to be analyzed – the file must be in the directory defined above.
 
-This format is very compact compared to the "kitchensink" format of B Simmons' survey-classifications_aggregated_kitchensink.csv but surprisingly still has **all** the information that file has.
+3) line 41 confused_with_file = 'confusedwith.csv'
 
-This summary of the data shows us some obvious cases were there is incomplete agreement between volunteer's classifications, and also where there is good or perfect consensus.  The next step is to define some rules to resolve or reconcile those situations where there was less than perfect agreement.  
+The name of the confusedwith file used to set up the survey task for the data to be analyzed – the file must be in the directory defined above.
+
+4) line 43 location = 'survey-classifications.csv'
+
+The name of the classification data export (it is best if these are the workflow classification exports) – the file must be in the directory defined above.
+
+5) line 47 workflow_id = 4994
+6) line 48 workflow_version = 106.0
+
+The survey task workflow number and the version to include in the output file – the version number can be used to cut off early development classifications.  Further down in the script there are other conditional statements that can be used to exclude certain classifications. 
+
+7) line 51 survey_task = 'T0'
+
+The task number of the survey task (normally T0 but can be project specific)
+
+8) line 54 metadata_fields = ['Filename']
+
+A list of metadata fields to include in the output files - these must match the subject metadata field names for your subjects. The list must include every metadata field name to be reported in the output, but not every subject must have values for all the metadata fields nor need all metadata field names be listed. Here is an example of a case with more metadata uploaded with the subjects which are to be included in the output:
+
+    line 54 metadata_fields = ['Site', 'Date_time', 'image_1']
+
+9) line 58  question_headers = ['how_many', 'behaviours', 'young', 'horns', 'care?']
+
+This is a list of Headers for the flattened output file for the "questions" columns - one per question in the questions file.  This list is optional - if it is left blank (i.e. []) the zooniverse questions labels will be used, for example
+"HOWMANYINDIVIDUALSDOYOUSEE". These are unnecessarily long and messy, and normally can be shortened.
+
+10) line 62 show_vote_fraction = [0]
+
+A list of questions which are to be filtered to a single value and vote fraction. These are normally “How many” type questions, but the output format can be used for Yes/No questions where the strict majority response is reported. If the question has more than two choices the value reported is the first value where 50% or more volunteers reported that value or values subsequent to it in the list of responses. Note the number of the questions starts at 0. The following example would be for a survey with both the first and second question a “how many” type question
+
+line 62 show_vote_fraction = [0, 1]
+
+11) line 69 custom_headers = {1: ['Resting', 'Standing', 'Moving', 'Eating', 'Interacting'],
+                  2: ['young-Yes', 'young-No'],
+                  3: ['horns-Yes', 'horns-No']
+                  }
+
+
+This is a dictionary of optional headers for the filtered output file. If the custom headers for a question are not defined, the question labels (or if given above in line 58, the question headers) and the response options to those questions will be used to create the column headings for that question eg " behaviours-RESTING". " behaviours-STANDING ".
+If the columns headers for a question are included here there must be a header for every possible response option for that question. Again questions are numbered from 0 in the order they are in the questions file.
+
+
+12) line 74 min_class = 10
+13) line 75 min_species_vf = 66
+14) line 76 ignore_vf = 26
+15) line 77 at_least_v_f = 51
+
+These are the limits to be used to filter the aggregate for consensus as described in the filter defined below.
+
 
 ## Filtering the aggregated data
 
-The following filter was written based on my own thoughts but hopefully in a way that the limits can be adjusted to align the results with a project team's requirements.  Up to this point the scripts will work with any survey task and any questions set, but at this point the first question is assumed to be a how_many question with the possible answers as an array of ordered "bins" corresponding to increasing counts of the choice(species) reported. 
+````
+"""The next section applies a optional filter to accept a consensus by plurality or to determine if the
+result is too ambiguous to accept.  Multiple species, if they survive the filter, are output
+on separate lines.
 
-This filtered file has no counterpart in B. Simmons' repository but obviously the projects using aggregate_survey.py must have done something similar starting from the format returned by those scripts.
+The details of the filter are as follows:
 
-The output after the filter has been applied could be returned in a vector format but the script I have supplied here outputs the data in a columnar format.  To this end the fieldnames for the columns containing the answers to the second and subsequent questions/responses must be chosen and hardcoded.  It is assumed there will be as a minimum, a column for subject, choice, choice vote-fraction, the how_many consensus and a vote_fraction for that consensus, plus one column for each question/response aggregate vote_fraction for the rest of the questions. Any other columns defined in the aggregate file can be brought forward as well.  
-If you need help to modify the filter for your needs, contact me at @Pmason at zooniverse.
+1)  The minimum number of classifications required retain a subject as classified is min_class. Subjects with
+    less than this number of classifications are marked "A0 - insufficient classifications in the species column.    
 
+2)  Determine species to include:
+    Calculate the total v_f for each species using all votes for that species in any classification for the
+    subject, including those with multiple species identified.
 
-````'''
-  The next section applies a optional filter to accept a consensus by plurality or to determine if the
-  result is too ambiguous to accept.  Multiple species, if they survive the filter, are output
-  on separate lines.
+    The minimum total v_f to count any species as present is the min_species_vf (value set below). Any species
+    with at least this vote fraction is recorded on a separate line with the responses to the rest of the 
+    questions as recorded  against that species. These are the species "known" to be present and are marked 
+    "C0 - consensus". There can be multiple "known" species.
 
- The details of the filter are as follows:
+    Species with a total vote fraction less than some value ignore_vf are ignored, and their "how many" count
+    may be spread over the remaining species as described below. 
+    If no species has a vote fraction over this limit then mark the subject as 'A1 - no species agreement '. This  
+    only occurs if volunteers voted for many different species and all votes are spread over many species.    
 
-1)  The minimum number of classifications required retain a subject as classified : 4
+3)  Indeterminate species - some species has a total vote fraction less than the min_species_vf but more
+    than the ignore_vf. A subject may have both known and indeterminate species, and it may have multiple 
+    indeterminate species. Indeterminate species will show on a separate line as 'I0 - indeterminate species' or 
+    'I1 - multiple indeterminate species' if there is more than one. Vote fractions will show for all responses
+    entered for the species but 'how many' values are shown only if the vote fraction meets some limit 
+    at_least_v_f where it is assumed they have some significance.      
+
+4)  If there is a "How many" type question. (These will generally be counts and a vote fraction for that count)        
+        Calculate the "How many" and vote fraction as follows:
+            1. Use the vote fractions for all possible responses to the 'how many' question(s), from all 
+            classifications including in some cases described below, those from an "ignored" species that did 
+            not make it through the species filter above.            
+            2. list the vote fraction of each possible response option ie the number of classifications that had
+            that response divided by the number of classifications for the subject, in order by count. Place 
+            "unknown" as the lowest option if it was an allowed choice.            
+            3. Beginning at the highest count, take the vote fraction of classifications that had that count 
+            and add the vote fraction of the next highest count, and continue until some total at_least_v_f 
+            saw AT LEAST that number of animals. Report the count as the 'how many' and the summed vote
+            fraction as the vote fraction. For a reasonable choice of at_least_v_f such as 51 this ensures any 
+            consensus, if one exists, is selected as the 'how many', otherwise the value can be interpreted as 
+            an "at least" count.
             
-2)  Then calculate the total v_f for a choice as the sum of the vote fractions for any number
-            of that species eg 20% say there are one and 30% say there are two present
-            then 50% agree that species is present
-    The minimum total v_f to count any species as present : 20%
-            if no species has a v-f over 20% then mark as 'species indeterminate'.
-    Apply these limits then, of those that remain:
-3)          If only one species is identified in any single classification for a subject,
-                    and the highest total v_f exceeds the next highest total v_f by at least 45%
-                            report that species as having consensus - see point 5 for calculating
-                            "how many" to report.
-                    otherwise report subject as 'species indeterminate'        
-4)          If two or more species are identified in at least one classification for a subject,            
-                    and if one species's total v_f exceeds the other by at least 45%, report
-                            only that species see point 5 for calculating "how many" to report.
-                    otherwise                             
-                            if total v_f for each species exceeds 65% report all such species 
-                            against that subject.
-                    else report as 'species indeterminate, possibly multiple'
-                            
-            
-5)  If only a single how_many bin exists for the majority species report that how_many and the  
-    vote fraction for that species as the how many v_f as well.
-      
-    If a multiple "how many" bins exist for the majority species (count or identification errors): 
-        If the lower count has a good consensus with a v_f higher than the next highest by at 
-        least 45%, use the lower count and the total v_f (ie everyone saw at least that count).
-        If the higher count has the larger v_f by at least 45% use the higher count and report 
-        only the higher count v_f against it. 
-        Oherwise the count is indeterminate by v_f - calculate the total number of animals 
-        reported for all classifications done for that subject including species eliminated for
-        low v_f - assume all animals reported are of the majority species type. Report the 
-        fraction of all classifications that reported that number of animals for the subject
-        as the v_f for this how_many.  Note this can produce errors if there is strong consensus 
-        for multiple species, AND at least one of those has multiple how_many bins with no consensus
-        on how many of that species exist. In this case the how_many is reported as "indeterminate 
-        how_many" 
-            
-6)  No other filters are applied to the other questions with a simple v_f recorded.````
+        If there is one or more "ignore" species which did not get enough votes to be counted as a known or an 
+        indeterminate species, it is very likely that the animals are misidentified, but it is also likely 
+        the 'how many' responses are still accurate, and these may be applied to one of the species that did 
+        make the cut.  
+        
+        The "ignored" votes for a species will be applied to any known or indeterminate species that was a 
+        'confused with' pair with the ignored species as listed in the confusedwith.csv file. If there is a
+        match, the vote fraction for each possible response for the ignored species is added to the vote fraction
+        for the corresponding response for the matching species. Note the vote fraction for the species choices
+        themselves are NOT modified, only the question responses are added up.       
+        In general, "known" species already have enough votes this makes little or no difference, but it is 
+        the best we can do to include all the information provided by the volunteers.
+        Species which have added votes are marked with the word "augmented". 
 
- 
+5)  For all other (ie not "how many" type) questions, report a simple v_f for each possible response.  This is 
+        based on the votes for each response divided by the total number of classifications.  If the votes for 
+        an ignored species are added to a known or indeterminate species the vote fractions can be higher than 
+        the species vote_fraction.  
 
+Note the output is a columnar format vs the answer_vector approach of the aggregated file, with columns for a 
+value and a vote fraction for each How many type question, and a column for every question response option 
+for the other question types"""
 
+````
