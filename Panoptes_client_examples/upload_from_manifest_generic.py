@@ -5,9 +5,9 @@ import textwrap
 import csv
 import os
 import io
-import validators
 from datetime import datetime
-from run_config import Runconfig
+import validators
+from run_config import Runconfig  # a copy is included in this repository
 import panoptes_client
 from panoptes_client import Panoptes, Project, Subject, SubjectSet
 
