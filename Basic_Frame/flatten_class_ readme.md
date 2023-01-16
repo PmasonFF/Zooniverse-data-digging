@@ -32,9 +32,10 @@ If the metadata was carefully constructed and consistent this can solve the prob
 This block searches the metadata json and extracts the original image size in pixels. If not present it reverts to a default which can be modified, either to signal the size was not available or to default to a nominal size.
 
 5) test blocks  Various tests of the data extracted from the classification file can be performed.  Unlike the simple blocks discussed above which are effectively independent of each other these test blocks require firstly that the data to be tested has been recovered in a known format and name (ie the appropriate block was set up), and secondly the appropriate test is performed on the appropriate data.  As such they are more difficult to add into the frame work.  At this point only a very limited number of these have been written, specifically:
-•	Test points from point drawing tools lay within the image_size ie no out-of-bounds points.
-•	Test circle centers are within a fixed percentage of the circle radius of an image edge (ie part of the circle lies within the image.)
-•	Test that no two points of the same type are placed within a distance “eps” of each other on the same subject by the same classifier (ie test for double clicks)
-•	As for above except for circle centres.
-•	Test the radius of a circle is within a range specified (relative to the image_size)
-•	Test the ellasped_time is consistent with a human classifier.
+
+-	Test points from point drawing tools lay within the image_size ie no out-of-bounds points.
+-	Test circle centers are within a fixed percentage of the circle radius of an image edge (ie part of the circle lies within the image.)
+- Test that no two points of the same type are placed within a distance “eps” of each other on the same subject by the same classifier (ie test for double clicks)
+- As for above except for circle centres.
+-	Test the radius of a circle is within a range specified (relative to the image_size)
+-	Test the ellasped_time is consistent with a human classifier.
