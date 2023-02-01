@@ -15,7 +15,7 @@ parsed_location = directory + os.sep + 'parsed_' + json_file + '.csv'
 
 # Filter definitions
 def include(comment_record):
-    if int(comment_record['board_id']) in [1498, 2308, 2011, 1174, 1500, 1501, 1499, 1497]:
+    if int(comment_record['board_id']) in [1498, 2308, 2011, 1174, 1500, 1501, 1499, 1497]: # board_id's here
         pass
     else:
         return False
