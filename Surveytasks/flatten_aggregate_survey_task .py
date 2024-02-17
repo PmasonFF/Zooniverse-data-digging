@@ -229,6 +229,7 @@ with open(out_location, 'w', newline='', encoding='utf-8') as ou_file:
                                 for species in task['value']:
                                     choice = species['choice']
                                     answer_vector = empty(questions, responses)
+                                    answer = ['' for q4 in questions]
                                     for q in range(0, len(questions)):
                                         try:
                                             answer[q] = species['answers'][questions[q]]
