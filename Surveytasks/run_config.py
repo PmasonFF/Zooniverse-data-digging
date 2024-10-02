@@ -12,7 +12,7 @@ class Runconfig(object):
         self.working_directory = ''
         self.project_slug = ''
 
-        key = b'CiEK55xLx1EeANpEuth0qND2_AGBKpdVoB90sy5vm2E='
+        key = b'B34I3W5aGJGuZHe9bjB1i2Z7qkRftd4aIbWPI68ecOE='
         fernet = Fernet(key)
 
         if os.path.isfile(self.run_config):
