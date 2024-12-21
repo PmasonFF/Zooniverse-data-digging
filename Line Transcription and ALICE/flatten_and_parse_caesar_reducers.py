@@ -301,7 +301,7 @@ if __name__ == '__main__':
         reducer export file should be renamed to  
         "Subject_reducer_export_XXXXXX.csv where "XXXXXXX" is the workflow-id.
         If this is done, this parameter is optional.
-        example: "-s Subject_reducer_export_26197.csv" """))
+        example: "-f Subject_reducer_export_26197.csv" """))
 
     parser.add_argument(
         '-x', '--xreference', default='metadata_crossreference',
@@ -424,6 +424,9 @@ if __name__ == '__main__':
 
     parsed_file = subject_reducer[:-4] + '_' + raw_limits + '_parsed.csv'
     columns, metadata_x_ref = load_metadata_x_ref(metadata_crossreference)
+    print(flatten_class(subject_reducer, parsed_file, sub_limits, group_ids, page))
+    print(natsort_double(parsed_file, subject_reducer[:-4] + '_'
+                         + raw_limits + '_sorted.csv', 4, 2, False, True))
     print(flatten_class(subject_reducer, parsed_file, sub_limits, group_ids, page))
     print(natsort_double(parsed_file, subject_reducer[:-4] + '_'
                          + raw_limits + '_sorted.csv', 4, 2, False, True))
