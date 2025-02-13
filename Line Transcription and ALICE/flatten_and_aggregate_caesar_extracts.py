@@ -5,14 +5,25 @@ import argparse
 import textwrap
 import csv
 import json
+import ast
 import os
 from os.path import join
 import operator
+
+# third party packages - must be installed
 from fuzzywuzzy import fuzz
 import numpy as np
 from natsort import natsorted
+# modules - must be in directory with script
 import line_scan
 import wordcan
+
+"""
+version with peel end groups, lcs, and remove outliers
+Currently set for maximum display of all differences, 
+with no difference shown meaning full agreement between all responses.
+Version 0.1.0
+"""
 
 
 # define a function that returns True or False based on whether the record is to be included
@@ -243,16 +254,16 @@ def check_outlier(grp_):
             max_ones = (similarity_[i] == 1.0).sum()
             max_ones_id = i
 
-        poor_match = 0
+        acceptable_match = 0
         for j in range(0, len(grp_)):
-            if similarity_[i, j] <= .65:
-                poor_match += 1
-        if poor_match > int(len(grp_) / 2 + 1):
+            if similarity_[i, j] > .60:  # ie an acceptable match to some other text
+                acceptable_match += 1
+        if acceptable_match < 2:
             to_remove_.append(grp_[i])
 
     cleaned_grp_ = [grp_[k] for k in range(0, len(grp_)) if grp_[k] not in to_remove_]
 
-    if max_ones / len(grp_) >= .8:
+    if max_ones / len(grp_) >= 1.0:  # changes level of differences shown, does not change reconciled text
         consensus_index = max_ones_id
     return consensus_index, cleaned_grp_, str(to_remove_)[1: -1]
 
@@ -291,7 +302,7 @@ def peel_common_end_groups(grp_):
     if s > 0:
         grp_ = [gr[s:] for gr in grp_]
     else:
-        start = 'ø'
+        start = ''
     # peel off common finish
     f, finish = common_finish(grp_[0], grp_[1])
     if len(grp_) == 2:
@@ -301,11 +312,11 @@ def peel_common_end_groups(grp_):
     if f > 0:
         grp_ = [gr[: -f] for gr in grp_]
     else:
-        finish = 'ø'
+        finish = ''
     return [start, ['ø' if t == '' else t for t in grp_], finish]
 
 
-def longestcommonsubstr(s1, s2):
+def longest_common_substr(s1, s2):
     m, n = len(s1), len(s2)
     # Create a 1D array to store the previous row's results
     prev = [0] * (n + 1)
@@ -330,16 +341,16 @@ def longestcommonsubstr(s1, s2):
 
 
 def peel_longest_common_substring(snip):
-    s, end, lcs = longestcommonsubstr(snip[0], snip[1])
-    if end - s > 2:
+    start, end, lcs = longest_common_substr(snip[0], snip[1])
+    if end - start > 2:
         if len(snip) == 2:
-            snip_before = [snip[0][:s], snip[1][:s]]
+            snip_before = [snip[0][:start], snip[1][:start]]
             snip_after = [snip[0][end:], snip[0][end:]]
             return [snip_before, lcs, snip_after]
         else:
             for index in range(2, len(snip)):
-                s, end, lcs = longestcommonsubstr(snip[index], lcs)
-            if end - s > 2:
+                start, end, lcs = longest_common_substr(snip[index], lcs)
+            if end - start > 2:
                 snip_before = []
                 snip_after = []
                 for gr in snip:
@@ -357,58 +368,54 @@ def peel_longest_common_substring(snip):
     return snip
 
 
-def sort_clean(snippet_):
-    sorted_snippet_ = sorted(sorted(snippet_), key=snippet_.count, reverse=True)
-    string_snippet_ = str(['ø' if t == '' else t for t in sorted_snippet_])
-    whitespace_snippet = [t for t in sorted_snippet_ if t.replace(' ', '') not in ['ø', '']]
-    if not whitespace_snippet:
-        return '', ''
-    return string_snippet_, sorted_snippet_[0]
-
-
 def reconcile_and_assemble(sorted_grp_trans):
     full_reconciled_text = ''
     full_differences_text = ''
     full_outliers = ''
     for line_group in sorted_grp_trans:
         grp = [text for _, _, text in line_group[2]]
-        differences = ''
         outliers_ = ''
         if len(grp) == 1:
             reconcile = grp[0]
+            differences = ''
         else:
             consensus_ind, clean_grp, outliers_ = check_outlier(grp)
             if consensus_ind >= 0 and len(clean_grp) >= 1:
                 reconcile = grp[consensus_ind]
+                differences = ''
             elif len(clean_grp) >= 2:
-                reconcile = peel_common_end_groups(clean_grp)
-                while True:
-                    next_reconcile = []
+                reconcile = ''
+                differences = peel_common_end_groups(clean_grp)
+                flag = True
+                while flag:
+                    flag = False
                     next_differences = []
-                    for snippet in reconcile:
+                    for snippet in differences:
                         if type(snippet) is list:
                             expanded_snippet = peel_longest_common_substring(snippet)
                             if expanded_snippet == snippet:  # ie no common substring longer than 3
-                                string_snippet, resolved_string = sort_clean(snippet)
-                                next_reconcile.append(resolved_string)
-                                next_differences.append(string_snippet)
+                                next_differences.append('§' + str(sorted(sorted(sorted(snippet),
+                                                                                key=len, reverse=True),
+                                                                         key=snippet.count, reverse=True)))
                             else:
-                                next_reconcile.extend(expanded_snippet)
+                                flag = True
                                 next_differences.extend(expanded_snippet)
                         else:
-                            next_reconcile.append(snippet)
                             next_differences.append(snippet)
-                    reconcile = next_reconcile
                     differences = next_differences
-                    if 'list' not in list(type(x).__name__ for x in reconcile):
-                        break
-            else:  # clean_grp is empty - normally an error with the lines drawn
-                reconcile = ['UNRESOLVED']
+            else:  # clean_grp is empty - normally an error with the lines drawn or low agreement between all responses
+                reconcile = 'UNRESOLVED '
                 differences = str(grp)
-        if reconcile:
-            full_reconciled_text += ''.join(reconcile).replace('ø', '') + '\n'
-            full_differences_text += '·' + ''.join(differences) + '\n'  # .replace('ø', '')
-            full_outliers += '·' + outliers_ + '\n'
+
+        if differences:
+            for string in differences:
+                if string.find('§') >= 0:
+                    reconcile += ast.literal_eval(string[1:])[0]
+                else:
+                    reconcile += string
+        full_reconciled_text += ''.join(reconcile).replace('ø', '') + '\n'
+        full_differences_text += '·' + ''.join(differences).replace('§', '') + '\n'
+        full_outliers += '·' + outliers_ + '\n'
     return full_reconciled_text.strip('\n'), full_differences_text.strip('\n'), full_outliers.strip('\n')
 
 
@@ -543,7 +550,7 @@ if __name__ == '__main__':
             the output file will reside, and 2) the name of 
             the subject_extracts.csv file if it is not the default name 
             "Subject_extracts_XXXXXX.csv where "XXXXXXX" is the workflow-id.
-             
+
             Then the workflow_id and the name of the metadata cross reference 
             file if it is not the default "metadata_crossreference_[workflow_id].csv".
             Finally various limits to the output may be defined:  The default is "all",
@@ -684,3 +691,4 @@ if __name__ == '__main__':
 
     print(natsort_double(aggregated_location, subject_extracts[:-4] + '_'
                          + raw_limits + '_reconciled.csv', 2, 1, False, True))
+
