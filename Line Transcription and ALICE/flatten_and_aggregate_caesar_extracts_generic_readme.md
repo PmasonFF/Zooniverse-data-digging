@@ -37,6 +37,7 @@ The subject_extracts export.csv file to parse. This is a copy of the  caesar ext
 Additional inputs can be used to limit the output to specified subject_id ranges, or a list of group_ids, and the line order can be somewhat adjusted with two additional parameters ( see below).   
 
 #### Parameter help:
+````
 usage: flatten_and_aggregate_caesar_extracts_generic.py [-h] [-d DIRECTORY]
                                                         [-f FILE]
                                                         [-x XREFERENCE]
@@ -156,17 +157,18 @@ options:
                         in width relative to the line height need smaller
                         number. Text that is spread out in width relative to
                         line height need a larger number. example: "-s 40"
+````
 
 
 Example 1): -d C:\py\BMT_collections -f Subject_extracts_export_25224.csv -x metadata_crossreference_25224.csv -w 25224 -l archaeology_and_folk_life_1961 -p bmt -s 40
 
 Example 2): -d C:\py\BMT_collections -w 26197 -s 26 -l 1000;104000000
 
- (using the default names for the subject extracts file, cross-reference, subjects in range 1000 - 104000000, the default values for pagination and 26 as the width to line ratio.)
+(using the default names for the subject extracts file, cross-reference, subjects in range 1000 - 104000000, the default values for pagination and 26 as the width to line ratio.)
 
 
 #### Output:
-	As written there are two output files:
+As written there are two output files:
 
 The first .csv file will be named as the subject extracts file with limit parameter and the words “_sorted.csv” added.  It will have the following columns:
 
