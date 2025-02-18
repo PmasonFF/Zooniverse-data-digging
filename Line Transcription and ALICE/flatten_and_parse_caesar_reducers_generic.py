@@ -321,7 +321,7 @@ if __name__ == '__main__':
         '-w', '--workflow',
         help=textwrap.dedent("""The transcription based workflow_id that is to 
         be parsed. This is a required field and is used to generate the default 
-        names for the input files.   example: "-w 25224"""))
+        names for the input files.   example: "-w 25224""""))
 
     parser.add_argument(
         '-l', '--limits', default='all',
