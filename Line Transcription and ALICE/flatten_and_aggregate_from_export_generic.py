@@ -637,7 +637,7 @@ if __name__ == '__main__':
         help=textwrap.dedent("""The transcription based workflow_id that is to be parsed.
         This is a required field and is used to generate the default names for the input 
         files.
-        example: "-w 25224"""))
+        example: '-w 25224'"""))
 
     parser.add_argument(
         '-t', '--task', default='T0',
@@ -672,7 +672,7 @@ if __name__ == '__main__':
         the left into Page 2, separated from Page 1 lines by two empty lines. This 
         option also works fine for single page images where lines all begin at the 
         left margin.  Single page can be forced using a value "single" and a special 
-        formating for Brimingham Museum Trust can be selected using a value "bmt".   
+        formatting for Birimingham Museum Trust can be selected using a value "bmt".   
         The latter may be useful where the text is in rough columns with multiple 
         segments spread across the page.  All versions add a horizontal sort for line 
         segments that are nearly at the same vertical position, listing them from left 
