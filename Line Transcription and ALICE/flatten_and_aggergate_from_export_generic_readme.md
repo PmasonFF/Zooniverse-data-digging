@@ -44,6 +44,7 @@ do not need to be listed.
 Additional inputs can be used to limit the output to specified subject_id ranges, or a list of group_ids, and the line order can be somewhat adjusted with two additional parameters ( see below).   
 
 #### Parameter help:
+````
 usage: flatten_and_aggregate_from_export_generic.py [-h] [-d DIRECTORY]
                                                     [-f FILE]
                                                     [-m METADATA_FIELDS]
@@ -163,6 +164,8 @@ options:
                         spread out in width relative to line height need a
                         larger number. example: "-s 40"
 
+````
+
 Example 1): -d C:\py\BMT_collections -f transcribing-birmingham-museums-accession-registers-classifications.csv -w 25224 -s 30 -l archaeology_and_folk_life_1955 -p bmt
 
 Example 2): -d C:\py\BMT_collections -w 26197 -s 26 -l 1000;104000000
@@ -170,8 +173,8 @@ Example 2): -d C:\py\BMT_collections -w 26197 -s 26 -l 1000;104000000
 (using the default names for the data export file, no additional metadata fields, subjects in range 1000 - 104000000, the default values for pagination and 26 as the width to line ratio.)
 
 
-#### Output:
-	As written there are two output files:
+#### Output: 
+As written there are two output files:
 
 The first .csv file will be named as the data export file with limit parameter and the words “_sorted.csv” added.  It will have the following columns:
 
