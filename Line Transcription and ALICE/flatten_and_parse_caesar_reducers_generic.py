@@ -321,7 +321,7 @@ if __name__ == '__main__':
         '-w', '--workflow',
         help=textwrap.dedent("""The transcription based workflow_id that is to 
         be parsed. This is a required field and is used to generate the default 
-        names for the input files.   example: "-w 25224""""))
+        names for the input files.   example: '-w 25224'"""))
 
     parser.add_argument(
         '-l', '--limits', default='all',
@@ -428,4 +428,3 @@ if __name__ == '__main__':
     print(flatten_class(subject_reducer, parsed_file, sub_limits, group_ids, page))
     print(natsort_double(parsed_file, subject_reducer[:-4] + '_'
                          + raw_limits + '_sorted.csv', 4, 2, False, True))
-
