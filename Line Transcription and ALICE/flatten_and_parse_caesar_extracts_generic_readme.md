@@ -1,4 +1,4 @@
-### [flatten_and_aggregate_caesar_extracts_generic.py](https://github.com/PmasonFF/Zooniverse-data-digging/blob/master/Line%20Transcription%20and%20ALICE/flatten_and_aggregate_caesar_extracts.py)
+### [flatten_and_aggregate_caesar_extracts_generic.py](https://github.com/PmasonFF/Zooniverse-data-digging/blob/master/Line%20Transcription%20and%20ALICE/flatten_and_aggregate_caesar_extracts_generic.py)
 
 This script uses the raw responses from the volunteers as extracted by caesar.  The data is effectively the same as the raw data export from the project builder with no aggregation but a somewhat simpler format.  The Subject extracts export is one of the two possible data exports from the caesar setup for the workflow.  It has positional and text information at the “internal_id” level for each classification done by all volunteers that worked on the subject.  It is necessary to extract both positional and text information and 1) cluster or group the texts based on the line positions (ie the aggregation step) and 2) reconcile the differences between the various versions of the same original text segment.   The algorithms used for these steps are NOT THE SAME as used by ALICE.  Indeed this approach was investigated originally to reduce the errors seen in the ALICE data, particularly duplicate lines that should but do not cluster, and errors in reconciliation due to splitting the text on spacing.  At the same time we wanted an easier means of pointing out the variations between volunteers, with an emphasis on showing only those differences, eliminating showing all high consensus options, or simple minor spacing differences.    
 
@@ -204,3 +204,23 @@ Note that text versions which differ by being absent or missing are shown as the
  If there are many instances of lines in the text_format column that are duplicated, check the width-to-line-ration is not too large resulting in lines that should cluster being repeated.  By “duplicated” I do not mean some line split in parts with the parts showing separately on other lines, but rather full lines repeated.  Split lines normally occur as a result of someone drawing multiple short lines under the text while someone else drew one longer line – this script does not test or correct for this condition (nor does ALICE). 
 
 
+
+The second .csv file will be named as above with the words “_sorted.csv” replaced by “_reconciled.csv”.  It will have the following columns:
+
+“subject_id”, “group_id”, “internal_id”, , plus other possible metadata fields, then  “text_format”, “differences”, “outliers”, and “noise”.
+
+This output file is sorted with a natural sort on first the internal_id and then group_id.
+
+text_format  - this column shows the complete reconciled text for the subject with the line order based on the pagination parameter.  It is the best estimate of the actual text.
+
+differences – this column shows only those lines were there was less than 100% similarity between responses for the same line, with blocks of the text common to all separated by lists of the individual responses that differ.
+
+outliers – this column shows any responses for a line where the response is so different from the rest of the responses for that line that no attempt was made to reconcile the large number of differences.  Most entries here will be transcription of other lines reported incorrectly, partial or incomplete transcriptions, or those with extraneous content which did not appear in the original.
+
+noise – this column contains the responses where the positional information was so far from any other line that the line did not cluster with any other line.  Almost always incorrectly drawn lines, or lines drawn, then dragged off the image instead of being deleted.
+
+While the outliers and noise are retained and displayed, these columns seldom contain useful text.   On the other hand, the differences column is very useful for reviewing and correcting the main text, particularly in the cases where the responses for each version where evenly split and the algorithm selected the incorrect one.
+
+Note that text versions which differ by being absent or missing are shown as the null symbol in the differences list “ø”. Simple differences in spacing are NOT shown (with the reconciled text defaulting to the minimum number of spaces common to all responses).  
+
+ If there are many instances of lines in the text_format column that are duplicated, check the width-to-line-ration is not too large resulting in lines that should cluster being repeated.  By “duplicated” I do not mean some line split in parts with the parts showing separately on other lines, but rather full lines repeated.  Split lines normally occur as a result of someone drawing multiple short lines under the text while someone else drew one longer line – this script does not test or correct for this condition (nor does ALICE). 
