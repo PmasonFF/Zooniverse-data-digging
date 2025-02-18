@@ -28,6 +28,7 @@ The subject_reducer export.csv file to parse. This is a copy of the caesar reduc
 Additional inputs can be used to limit the output to specified subject_id ranges, or a list of group_ids, and the line order can be somewhat adjusted with two additional parameters ( see below).   
 
 #### Parameter help:
+````
 
 usage: flatten_and_parse_caesar_reducers_generic.py [-h] [-d DIRECTORY]
                                                     [-f FILE] [-x XREFERENCE]
@@ -148,6 +149,7 @@ options:
                         a smaller number. Text that is spread out in width
                         relative to line height need a larger number. example:
                         "-s 40"
+````
 
 Example 1): -d C:\py\BMT_collections -f Subject_reducer_export_25224.csv -x metadata_crossreference_25224.csv -w 25224 -l archaeology_and_folk_life_1961;archaeology_and_folk_life_1962 -p bmt -s 40
 
