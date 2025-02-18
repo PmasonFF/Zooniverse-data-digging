@@ -47,41 +47,41 @@ def clean_and_decorate(text):
     return text.replace('\n', ''). \
         replace('[deletion]', '˄').replace('[/deletion]', '˄'). \
         replace('[insertion]', '˅').replace('[/insertion]', '˅'). \
-        replace('[unclear]', '‽').replace('[/unclear]', '‽'). \
-        replace('[underline]', 'µ').replace('[/underline]', 'µ'). \
+        replace('[unclear]', '‽').replace('[/unclear]', '‽').\
+        replace('[underline]', 'µ').replace('[/underline]', 'µ').\
         replace('[Underline]', 'µ').replace('[/Underline]', 'µ').strip(' ')
 
 
 def positional_sort_bmt(line_height_, grp_trans):
     if len(grp_trans) == 1:
         return grp_trans
-    sorted_y = sorted(grp_trans, key=operator.itemgetter(1))
+    sorted_x_y = sorted(grp_trans, key=operator.itemgetter(1))
     final_sorted_grp_trans = []
     x_left = 0
 
     # get header - consecutive lines x aligned to left half of top of page
     header = []
-    for line in sorted_y:
-        if line[0] > 12 * line_height_:  # test for line(s) at top with min x to right side (header)
+    for line in sorted_x_y:
+        if line[0] > .5 * width_to_line_ratio * line_height_:
             header.append(line)
         else:
             break
     if header:
         for line in header:
-            sorted_y.remove(line)
+            sorted_x_y.remove(line)
         final_sorted_grp_trans.extend(header)
 
-    # get top lines of text that are within .7 lh vertical of upper-most line, after header removed:
+    # get top lines of text that are within .7 lh of upper-most line:
     top_lines = []
-    if sorted_y:
-        y_top_line = sorted_y[0][1]
-        for line in sorted_y:
-            if line[1] - y_top_line <= .7 * line_height_:
+    if sorted_x_y:
+        y_min = sorted_x_y[0][1]
+        for line in sorted_x_y:
+            if line[1] - y_min <= .7 * line_height_:
                 top_lines.append(line)
             else:
                 break
 
-    # get object number column - lines that are x aligned +- 1 lh of left-most top line
+    # get object column lines - lines that are x aligned +- 1 lh of left-most top line
     # and y aligned within 1.3 lh of previous object line - generally the object number and revisions below it,
     # but it can include part or all of the middle block if there is no object number indent
     if top_lines:
@@ -89,40 +89,41 @@ def positional_sort_bmt(line_height_, grp_trans):
         sorted_top_x = sorted(top_lines, key=operator.itemgetter(0))
         current_y_min = top_lines[0][1]
         x_left = sorted_top_x[0][0]
-        for line in sorted_y:
+        for line in sorted_x_y:
+
             if abs(line[0] - x_left) <= line_height_ and line[1] - current_y_min < 1.3 * line_height_:
                 object_lines.append(line)
                 current_y_min = line[1]
         if object_lines:
             for line in object_lines:
-                sorted_y.remove(line)
+                sorted_x_y.remove(line)
             final_sorted_grp_trans.extend(object_lines)
 
     # get far left notes - these are x aligned at least 3 lh left of the left-most line so far
     far_left = []
-    if sorted_y:
-        for line in sorted_y:
+    if sorted_x_y:
+        for line in sorted_x_y:
             if x_left - line[0] > 3 * line_height_:
                 far_left.append(line)
         if far_left:
             for line in far_left:
-                sorted_y.remove(line)
+                sorted_x_y.remove(line)
 
     # everything else is in the main block
     main_block = []
-    if sorted_y:
-        current_y_min = sorted_y[0][1]
+    if sorted_x_y:
+        current_y_min = sorted_x_y[0][1]
         while True:
-            same_line = [sorted_y[0]]
-            for line in sorted_y[1:]:
+            same_line = [sorted_x_y[0]]
+            for line in sorted_x_y[1:]:
                 if line[1] - current_y_min <= .5 * line_height_:
                     same_line.append(line)
             main_block.extend(sorted(same_line, key=operator.itemgetter(0)))
             if same_line:
                 for line in same_line:
-                    sorted_y.remove(line)
-            if sorted_y:
-                current_y_min = sorted_y[0][1]
+                    sorted_x_y.remove(line)
+            if sorted_x_y:
+                current_y_min = sorted_x_y[0][1]
             else:
                 break
 
@@ -351,7 +352,7 @@ if __name__ == '__main__':
         the left into Page 2, separated from Page 1 lines by two empty lines. This 
         option also works fine for single page images where lines all begin at the 
         left margin.  Single page can be forced using a value "single" and a special 
-        formating for Brimingham Museum Trust can be selected using a value "bmt".   
+        formatting for Birmingham Museum Trust can be selected using a value "bmt".   
         The latter may be useful where the text is in rough columns with multiple 
         segments spread across the page.  All versions add a horizontal sort for line 
         segments that are nearly at the same vertical position, listing them from left 
@@ -427,6 +428,4 @@ if __name__ == '__main__':
     print(flatten_class(subject_reducer, parsed_file, sub_limits, group_ids, page))
     print(natsort_double(parsed_file, subject_reducer[:-4] + '_'
                          + raw_limits + '_sorted.csv', 4, 2, False, True))
-    print(flatten_class(subject_reducer, parsed_file, sub_limits, group_ids, page))
-    print(natsort_double(parsed_file, subject_reducer[:-4] + '_'
-                         + raw_limits + '_sorted.csv', 4, 2, False, True))
+
