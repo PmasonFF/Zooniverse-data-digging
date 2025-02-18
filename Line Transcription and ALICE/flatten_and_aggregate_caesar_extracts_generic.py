@@ -155,7 +155,7 @@ def sort_file(input_file, output_file_sorted, field, reverse, clean):
     return sort_counter
 
 
-def positional_sort(line_height_, grp_trans):
+def positional_sort_bmt(line_height_, grp_trans):
     if len(grp_trans) == 1:
         return grp_trans
     sorted_x_y = sorted(grp_trans, key=operator.itemgetter(1))
@@ -165,7 +165,7 @@ def positional_sort(line_height_, grp_trans):
     # get header - consecutive lines x aligned to left half of top of page
     header = []
     for line in sorted_x_y:
-        if line[0] > 12 * line_height_:
+        if line[0] > .5 * width_to_line_ratio * line_height_:
             header.append(line)
         else:
             break
@@ -233,6 +233,50 @@ def positional_sort(line_height_, grp_trans):
     final_sorted_grp_trans.extend(sorted(main_block, key=operator.itemgetter(1)))
     final_sorted_grp_trans.extend(far_left)
     return final_sorted_grp_trans
+
+
+def positional_sort_single_page(line_height_, grp_trans):
+    if len(grp_trans) <= 1:
+        return grp_trans
+    sorted_grp_trans = []
+    sorted_y = sorted(grp_trans, key=operator.itemgetter(1))
+    similar_y = [sorted_y[0]]
+    for i in range(1, len(sorted_y)):
+        if sorted_y[i][1] - sorted_y[i - 1][1] < .5 * line_height_:
+            similar_y.append(sorted_y[i])
+        else:
+            sorted_similar_y = sorted(similar_y, key=operator.itemgetter(0))
+            sorted_grp_trans.extend(sorted_similar_y)
+            similar_y = [sorted_y[i]]
+    sorted_grp_trans.extend(sorted(similar_y, key=operator.itemgetter(0)))
+    return sorted_grp_trans
+
+
+def positional_sort_double_page(image_width, line_height_, grp_trans):
+    if len(grp_trans) <= 1:
+        return grp_trans
+    paged_grp_ = [[], []]
+
+    for grp_ in grp_trans:
+        if grp_[0] > .45 * image_width:
+            paged_grp_[1].append(grp_)
+        else:
+            paged_grp_[0].append(grp_)
+    sorted_grp_trans = []
+    for p in (0, 1):
+        if paged_grp_[p]:
+            sorted_y = sorted(paged_grp_[p], key=operator.itemgetter(1))
+            similar_y = [sorted_y[0]]
+            for i in range(1, len(sorted_y)):
+                if sorted_y[i][1] - sorted_y[i - 1][1] < .4 * line_height_:
+                    similar_y.append(sorted_y[i])
+                else:
+                    sorted_similar_y = sorted(similar_y, key=operator.itemgetter(0))
+                    sorted_grp_trans.extend(sorted_similar_y)
+                    similar_y = [sorted_y[i]]
+            sorted_grp_trans.extend(sorted(similar_y, key=operator.itemgetter(0)))
+            sorted_grp_trans.append((0, 0, [[0, 0, '\n']]))
+    return sorted_grp_trans
 
 
 def check_outlier(grp_):
@@ -437,7 +481,13 @@ def process_aggregation(sub, agg_list):
         for index in reversed(to_replace):
             del positional_clusters[index]
         positional_clusters.extend(to_add)
-    sorted_grouped_transcriptions = positional_sort(line_height, positional_clusters)
+    if page == 'bmt':
+        sorted_grouped_transcriptions = positional_sort_bmt(line_height, positional_clusters)
+    elif page == 'single':
+        sorted_grouped_transcriptions = positional_sort_single_page(line_height, positional_clusters)
+    else:  # default or 'double' page
+        sorted_grouped_transcriptions = positional_sort_double_page(int(metadata_x_ref[sub]["image_width"]),
+                                                                    line_height, positional_clusters)
     text_format, differences, outliers = reconcile_and_assemble(sorted_grouped_transcriptions)
     # and then write the grouped transcriptions to a file
     new_row = {'subject_id': sub,
@@ -515,7 +565,7 @@ def aggregate(sort_loc, aggregate_loc):
 
 # This section defines a sort function. Note the fields are numbered starting from '0'
 def natsort_double(input_file, output_file_sorted, field_1, field_2, reverse, clean):
-    #  This allows a sort of the output file on a specific fields.
+    #  This allows a sort of the output file on two specific fields.  In this case internal_id then group_id
     with open(input_file, 'r', encoding='utf-8-sig') as in_file:
         in_put = csv.reader(in_file)
         headers = in_put.__next__()
@@ -594,7 +644,7 @@ if __name__ == '__main__':
         help=textwrap.dedent("""The transcription based workflow_id that is to be parsed.
         This is a required field and is used to generate the default names for the input 
         files.
-        example: "-w 25224"""))
+        example: '-w 25224'"""))
 
     parser.add_argument(
         '-l', '--limits', default='all',
@@ -614,6 +664,20 @@ if __name__ == '__main__':
         example 1: "-l archaeology_and_folk_life_1962" 
         example 2: "-l archaeology_and_folk_life_1961;archaeology_and_folk_life_1962"
         Note use of semicolon and no spaces.  """))
+
+    parser.add_argument(
+        '-p', '--pagination', default='double',
+        help=textwrap.dedent("""This parameter is used to adjust the sorting of 
+        the consensus text into pages. Currently there are three options, the default 
+        assumes double pages and places lines beginning 45%% of the image width from 
+        the left into Page 2, separated from Page 1 lines by two empty lines. This 
+        option also works fine for single page images where lines all begin at the 
+        left margin.  Single page can be forced using a value "single" and a special 
+        formatting for Birimingham Museum Trust can be selected using a value "bmt".   
+        The latter may be useful where the text is in rough columns with multiple 
+        segments spread across the page.  All versions add a horizontal sort for line 
+        segments that are nearly at the same vertical position, listing them from left 
+        to right for each page.  example: "-p single" """))
 
     parser.add_argument(
         '-s', '--width_to_line_ratio', default=26,
@@ -679,6 +743,8 @@ if __name__ == '__main__':
         print('The width_to_line_ratio "', args.width_to_line_ratio, '" is not an integer.')
         quit()
 
+    page = args.pagination  # get preferred pagination type
+
     # Script settings and file locations:
     unsorted_location = subject_extracts[:-4] + '_flattened.csv'
     sorted_location = subject_extracts[:-4] + '_' + raw_limits + '_sorted.csv'
@@ -691,4 +757,3 @@ if __name__ == '__main__':
 
     print(natsort_double(aggregated_location, subject_extracts[:-4] + '_'
                          + raw_limits + '_reconciled.csv', 2, 1, False, True))
-
