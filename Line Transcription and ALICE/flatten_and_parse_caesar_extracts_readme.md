@@ -1,4 +1,4 @@
-### [flatten_and_aggregate_caesar_extracts.py](https://github.com/PmasonFF/Zooniverse-data-digging/blob/master/Line%20Transcription%20and%20ALICE/flatten_and_aggregate_caesar_extracts.py)
+### [flatten_and_aggregate_caesar_extracts_generic.py](https://github.com/PmasonFF/Zooniverse-data-digging/blob/master/Line%20Transcription%20and%20ALICE/flatten_and_aggregate_caesar_extracts.py)
 
 This script uses the raw responses from the volunteers as extracted by caesar.  The data is effectively the same as the raw data export from the project builder with no aggregation but a somewhat simpler format.  The Subject extracts export is one of the two possible data exports from the caesar setup for the workflow.  It has positional and text information at the “internal_id” level for each classification done by all volunteers that worked on the subject.  It is necessary to extract both positional and text information and 1) cluster or group the texts based on the line positions (ie the aggregation step) and 2) reconcile the differences between the various versions of the same original text segment.   The algorithms used for these steps are NOT THE SAME as used by ALICE.  Indeed this approach was investigated originally to reduce the errors seen in the ALICE data, particularly duplicate lines that should but do not cluster, and errors in reconciliation due to splitting the text on spacing.  At the same time we wanted an easier means of pointing out the variations between volunteers, with an emphasis on showing only those differences, eliminating showing all high consensus options, or simple minor spacing differences.    
 
@@ -37,11 +37,13 @@ The subject_extracts export.csv file to parse. This is a copy of the  caesar ext
 Additional inputs can be used to limit the output to specified subject_id ranges, or a list of group_ids, and the line order can be somewhat adjusted with two additional parameters ( see below).   
 
 #### Parameter help:
-
-usage: flatten_and_aggregate_caesar_extracts.py [-h] [-d DIRECTORY] [-f FILE]
-                                                [-x XREFERENCE] [-w WORKFLOW]
-                                                [-l LIMITS]
-                                                [-s WIDTH_TO_LINE_RATIO]
+usage: flatten_and_aggregate_caesar_extracts_generic.py [-h] [-d DIRECTORY]
+                                                        [-f FILE]
+                                                        [-x XREFERENCE]
+                                                        [-w WORKFLOW]
+                                                        [-l LIMITS]
+                                                        [-p PAGINATION]
+                                                        [-s WIDTH_TO_LINE_RATIO]
 
 The first step is to define the input files and path for the 
 subject extracts file using parameters. This is done by giving the 
@@ -59,13 +61,12 @@ lower limit for subject_ids to be included, and option two is a
 list of the group_id's to be included. 
 
 options:
-
-  -h, --help            show this help message and exit  -d DIRECTORY, --directory DIRECTORY
+  -h, --help            show this help message and exit
+  -d DIRECTORY, --directory DIRECTORY
                         The path and directory where the input and output
                         files, are located. It defaults to the directory where
                         this script is running. example '-d
                         C:\py\BMT_collections'
-                        
   -f FILE, --file FILE  The subject_extracts.csv file to parse. It must be in
                         the working directory. This is a copy of the caesar
                         extracts as requested and downloaded from the caesar
@@ -78,7 +79,6 @@ options:
                         "Subject_extracts_XXXXXX.csv where "XXXXXXX" is the
                         workflow-id, in which case this parameter is optional.
                         example: "-f Subject_extracts_26197.csv"
-                        
   -x XREFERENCE, --xreference XREFERENCE
                         The metadata_crossreference_[workflow_id].csv file. It
                         must be in the working directory. This is a cross
@@ -92,13 +92,11 @@ options:
                         the workflow_id, in which case this parameter is
                         optional. example: "-x
                         metadata_crossreference_25224.csv"
-                        
   -w WORKFLOW, --workflow WORKFLOW
                         The transcription based workflow_id that is to be
                         parsed. This is a required field and is used to
                         generate the default names for the input files.
-                        example: "-w 25224
-                        
+                        example: '-w 25224'
   -l LIMITS, --limits LIMITS
                         This parameter is used to limit the output to selected
                         ranges of zooniverse subject_id or group_id's. The
@@ -121,7 +119,22 @@ options:
                         archaeology_and_folk_life_1962" example 2: "-l archaeo
                         logy_and_folk_life_1961;archaeology_and_folk_life_1962
                         " Note use of semicolon and no spaces.
-                        
+  -p PAGINATION, --pagination PAGINATION
+                        This parameter is used to adjust the sorting of the
+                        consensus text into pages. Currently there are three
+                        options, the default assumes double pages and places
+                        lines beginning 45% of the image width from the left
+                        into Page 2, separated from Page 1 lines by two empty
+                        lines. This option also works fine for single page
+                        images where lines all begin at the left margin.
+                        Single page can be forced using a value "single" and a
+                        special formatting for Birimingham Museum Trust can be
+                        selected using a value "bmt". The latter may be useful
+                        where the text is in rough columns with multiple
+                        segments spread across the page. All versions add a
+                        horizontal sort for line segments that are nearly at
+                        the same vertical position, listing them from left to
+                        right for each page. example: "-p single"
   -s WIDTH_TO_LINE_RATIO, --width_to_line_ratio WIDTH_TO_LINE_RATIO
                         This parameter is used to adjust the clustering of
                         drawn lines to aggregate correlated text. This value
@@ -189,4 +202,5 @@ While the outliers and noise are retained and displayed, these columns seldom co
 Note that text versions which differ by being absent or missing are shown as the null symbol in the differences list “ø”. Simple differences in spacing are NOT shown (with the reconciled text defaulting to the minimum number of spaces common to all responses).  
 
  If there are many instances of lines in the text_format column that are duplicated, check the width-to-line-ration is not too large resulting in lines that should cluster being repeated.  By “duplicated” I do not mean some line split in parts with the parts showing separately on other lines, but rather full lines repeated.  Split lines normally occur as a result of someone drawing multiple short lines under the text while someone else drew one longer line – this script does not test or correct for this condition (nor does ALICE). 
+
 
