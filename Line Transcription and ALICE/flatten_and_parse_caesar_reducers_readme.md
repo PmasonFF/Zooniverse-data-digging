@@ -90,7 +90,7 @@ options:
                         The transcription based workflow_id that is to be
                         parsed. This is a required field and is used to
                         generate the default names for the input files.
-                        example: "-w 25224
+                        example: "-w 25224"
   -l LIMITS, --limits LIMITS
                         This parameter is used to limit the output to selected
                         ranges of zooniverse subject_id or group_id's. The
