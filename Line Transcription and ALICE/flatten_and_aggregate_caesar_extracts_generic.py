@@ -19,10 +19,11 @@ import line_scan
 import wordcan
 
 """
-version with peel end groups, lcs, and remove outliers
-Currently set for maximum display of all differences, 
-with no difference shown meaning full agreement between all responses.
-Version 0.1.0
+Version 0.1.2
+0.1.2 - raw docstring to remove syntax warning re '/p' line 618
+0.1.1 - version with peel end groups, lcs, and remove outliers
+        Currently set for maximum display of all differences, 
+        with no difference shown meaning full agreement between all responses.
 """
 
 
@@ -611,7 +612,7 @@ if __name__ == '__main__':
 
     parser.add_argument(
         '-d', '--directory', default='.',
-        help=textwrap.dedent("""The path and directory where the input and output
+        help=textwrap.dedent(r"""The path and directory where the input and output
         files, are located. It defaults to the directory where this script is 
         running.         
         example '-d C:\py\BMT_collections' """))
