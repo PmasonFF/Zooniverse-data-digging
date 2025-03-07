@@ -1,12 +1,15 @@
 import argparse
 import textwrap
 import csv
-import json
 import os
 from os.path import join
 
-# version = 0.1  # added encoding= 'utf-8' for open "transcription_line_file"
-version = 0.2  # save file with BOM character (encoding='uft-8-sig')
+"""
+Version = 0.2.1
+0.2.1 - raw docstring to remove syntax warning re '/p' line 58
+0.2.0 - save file with BOM character (encoding='uft-8-sig')
+0.1.0 - added encoding= 'utf-8' for open "transcription_line_file"
+"""
 
 # extract text from a 'transcription_line_metadata_XXXXXXX.csv' file found
 # in a subdirectory (folder) named  'transcription_XXXXXXX' based on the value
@@ -50,7 +53,7 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument(
     '-d', '--directory', default='.',
-    help=textwrap.dedent("""The path and directory where the input and output
+    help=textwrap.dedent(r"""The path and directory where the input and output
     files, are located. It defaults to the directory where this script is 
     running. example '-d C:\py\BMT_collections' """))
 
@@ -99,3 +102,4 @@ with open(output_file, 'w', newline='', encoding='utf-8-sig') as out_file:
             'consensus_text': extract_text(directory, transcription_id)
         }
         writer.writerow(new_line)
+
