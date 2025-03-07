@@ -5,6 +5,12 @@ import os
 import csv
 from os.path import join
 
+"""
+Version 0.1.1
+0.1.1 - raw docstring to remove syntax warning re '/p' line 75
+0.1.0 - added version
+"""
+
 
 def create_metadata_x_ref(input_filename, workflow_id_, output_filename):
     # Open the input file and set up for reading
@@ -36,9 +42,9 @@ def create_metadata_x_ref(input_filename, workflow_id_, output_filename):
                                       }
 
                         # try:  # add other metadata fields for your project here as needed:
-                        #     output_row["File Name"] = subject_metadata_["File Name"]
+                        #     output_row["field_name"] = subject_metadata_["field_name"]
                         # except KeyError:
-                        #     output_row["File Name"] = ''
+                        #     output_row["field_name"] = ''
 
                     except KeyError:
                         print(row["subject_id"], 'missing internal_id or group_id')
@@ -64,17 +70,17 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument(
     '-d', '--directory', default='.',
-    help=textwrap.dedent("""The path and directory where the input and output
+    help=textwrap.dedent(r"""The path and directory where the input and output
     files, are located. It defaults to the directory where this script is 
     running. example '-d C:\py\BMT_collections' """))
 
 parser.add_argument(
-    '-s', '--data_export',
+    '-f', '--data_export',
     help=textwrap.dedent("""The project data export.csv file which is used
     to generate a cross-reference between the zooniverse subject id and the 
     subject metadata. It must be in the working directory and is either the full 
     data export or classifications by workflow downloaded via the project builder.  
-    example: "-s transcribing-birmingham-museums-accession-registers-classifications.csv" """))
+    example: "-f transcribing-birmingham-museums-accession-registers-classifications.csv" """))
 
 parser.add_argument(
     '-w', '--workflow',
