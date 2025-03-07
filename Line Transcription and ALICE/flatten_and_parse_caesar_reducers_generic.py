@@ -10,6 +10,12 @@ from os.path import join
 import operator
 from natsort import natsorted
 
+"""
+Version 0.1.1
+0.1.1 - raw docstring to remove syntax warning re '/p' line 248
+0.1.0 - renamed "generic"
+"""
+
 
 # define a function that returns True or False based on whether the record is to be included
 def include(class_record, sub_limits_, group_ids_):
@@ -287,7 +293,7 @@ if __name__ == '__main__':
 
     parser.add_argument(
         '-d', '--directory', default='.',
-        help=textwrap.dedent("""The path and directory where the input and 
+        help=textwrap.dedent(r"""The path and directory where the input and 
         output files, are located. It defaults to the directory where this 
         script is running.  example '-d C:\py\BMT_collections' """))
 
