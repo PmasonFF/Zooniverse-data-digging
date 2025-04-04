@@ -34,7 +34,7 @@ usage: flatten_and_parse_caesar_reducers_generic.py [-h] [-d DIRECTORY]
                                                     [-f FILE] [-x XREFERENCE]
                                                     [-w WORKFLOW] [-l LIMITS]
                                                     [-p PAGINATION]
-                                                    [-s WIDTH_TO_LINE_RATIO]
+                                                    [-r WIDTH_TO_LINE_RATIO]
 
 The first step is to define the input files and path for the subject 
 reducer export file using parameters. This is done by giving the 
@@ -130,7 +130,7 @@ options:
                         horizontal sort for line segments that are nearly at
                         the same vertical position, listing them from left to
                         right for each page. example: "-p single"
-  -s WIDTH_TO_LINE_RATIO, --width_to_line_ratio WIDTH_TO_LINE_RATIO
+  -r WIDTH_TO_LINE_RATIO, --width_to_line_ratio WIDTH_TO_LINE_RATIO
                         This parameter is used to adjust the sorting and
                         display of the consensus text into pages. In this
                         script using the subject reductions. It DOES NOT
@@ -148,10 +148,10 @@ options:
                         are narrower in width relative to the line height need
                         a smaller number. Text that is spread out in width
                         relative to line height need a larger number. example:
-                        "-s 40"
+                        "-r 40"
 ````
 
-Example 1): -d C:\py\BMT_collections -f Subject_reducer_export_25224.csv -x metadata_crossreference_25224.csv -w 25224 -l archaeology_and_folk_life_1961;archaeology_and_folk_life_1962 -p bmt -s 40
+Example 1): -d C:\py\BMT_collections -f Subject_reducer_export_25224.csv -x metadata_crossreference_25224.csv -w 25224 -l archaeology_and_folk_life_1961;archaeology_and_folk_life_1962 -p bmt -r 40
 
 Example 2): -d C:\py\BMT_collections -w 25224  (using the default names for the subject reducer file, cross-reference, all records, and the default values for pagination and width to line ratio.)
 
