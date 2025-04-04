@@ -50,7 +50,7 @@ usage: flatten_and_aggregate_from_export_generic.py [-h] [-d DIRECTORY]
                                                     [-w WORKFLOW] [-t TASK]
                                                     [-l LIMITS]
                                                     [-p PAGINATION]
-                                                    [-s WIDTH_TO_LINE_RATIO]
+                                                    [-r WIDTH_TO_LINE_RATIO]
 
 The first step is to define the input files and path for the 
 data export file using parameters. This is done by giving the 
@@ -143,7 +143,7 @@ options:
                         horizontal sort for line segments that are nearly at
                         the same vertical position, listing them from left to
                         right for each page. example: "-p single"
-  -s WIDTH_TO_LINE_RATIO, --width_to_line_ratio WIDTH_TO_LINE_RATIO
+  -r WIDTH_TO_LINE_RATIO, --width_to_line_ratio WIDTH_TO_LINE_RATIO
                         This parameter is used to adjust the clustering of
                         drawn lines to aggregate correlated text. This value
                         may vary from subject set to subject set depending on
@@ -161,13 +161,13 @@ options:
                         text. Scans which are narrower in width relative to
                         the line height need smaller number. Text that is
                         spread out in width relative to line height need a
-                        larger number. example: "-s 40"
+                        larger number. example: "-r 40"
 
 ````
 
-Example 1): -d C:\py\BMT_collections -f transcribing-birmingham-museums-accession-registers-classifications.csv -w 25224 -s 30 -l archaeology_and_folk_life_1955 -p bmt
+Example 1): -d C:\py\BMT_collections -f transcribing-birmingham-museums-accession-registers-classifications.csv -w 25224 -r 30 -l archaeology_and_folk_life_1955 -p bmt
 
-Example 2): -d C:\py\BMT_collections -w 26197 -s 26 -l 1000;104000000
+Example 2): -d C:\py\BMT_collections -w 26197 -r 26 -l 1000;104000000
 
 (using the default names for the data export file, no additional metadata fields, subjects in range 1000 - 104000000, the default values for pagination and 26 as the width to line ratio.)
 
