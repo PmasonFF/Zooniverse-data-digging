@@ -11,7 +11,9 @@ import operator
 from natsort import natsorted
 
 """
-Version 0.1.1
+Version 0.2.1
+0.2.1 - width_to_line_ratio shortform from -s to -r
+0.2.0 - ensure output files with limit parameters are valid file names
 0.1.1 - raw docstring to remove syntax warning re '/p' line 248
 0.1.0 - renamed "generic"
 """
@@ -50,9 +52,9 @@ def load_metadata_x_ref(input_filename):
 
 
 def clean_and_decorate(text):
-    return text.replace('\n', ''). \
-        replace('[deletion]', '˄').replace('[/deletion]', '˄'). \
-        replace('[insertion]', '˅').replace('[/insertion]', '˅'). \
+    return text.replace('\n', '').\
+        replace('[deletion]', '˄').replace('[/deletion]', '˄').\
+        replace('[insertion]', '˅').replace('[/insertion]', '˅').\
         replace('[unclear]', '‽').replace('[/unclear]', '‽').\
         replace('[underline]', 'µ').replace('[/underline]', 'µ').\
         replace('[Underline]', 'µ').replace('[/Underline]', 'µ').strip(' ')
@@ -365,7 +367,7 @@ if __name__ == '__main__':
         to right for each page.  example: "-p single" """))
 
     parser.add_argument(
-        '-s', '--width_to_line_ratio', default=30,
+        '-r', '--width_to_line_ratio', default=30,
         help=textwrap.dedent("""This parameter is used to adjust the sorting and 
         display of the consensus text into pages. In this script using the subject 
         reductions. It DOES NOT affect the clustering of text lines.  It is not directly 
@@ -378,7 +380,7 @@ if __name__ == '__main__':
         consensus text is listed may be less than desirable. Scans which are narrower 
         in width relative to the line height need a smaller number.  Text that is 
         spread out in width relative to line height need a larger number.                         
-        example: "-s 40" """))
+        example: "-r 40" """))
 
     args = parser.parse_args()
     directory = args.directory
@@ -429,8 +431,11 @@ if __name__ == '__main__':
 
     page = args.pagination  # get preferred pagination type
 
-    parsed_file = subject_reducer[:-4] + '_' + raw_limits + '_parsed.csv'
+    clean_filename_table = dict((ord(char), '_') for char in r'<>:"/\|?*')
+    clean_limits = raw_limits.translate(clean_filename_table)
+
+    parsed_file = subject_reducer[:-4] + '_' + clean_limits + '_parsed.csv'
     columns, metadata_x_ref = load_metadata_x_ref(metadata_crossreference)
     print(flatten_class(subject_reducer, parsed_file, sub_limits, group_ids, page))
     print(natsort_double(parsed_file, subject_reducer[:-4] + '_'
-                         + raw_limits + '_sorted.csv', 4, 2, False, True))
+                         + clean_limits + '_sorted.csv', 4, 2, False, True))
