@@ -72,8 +72,8 @@ def load_metadata_x_ref(input_filename):
 
 
 def clean_and_decorate(text):
-    return text.replace('\n', ''). \
-        replace('[deletion]', '˄').replace('[/deletion]', '˄'). \
+    return text.replace('\n', '').\
+        replace('[deletion]', '˄').replace('[/deletion]', '˄').\
         replace('[insertion]', '˅').replace('[/insertion]', '˅').\
         replace('[unclear]', '‽').replace('[/unclear]', '‽').\
         replace('[underline]', 'µ').replace('[/underline]', 'µ').\
