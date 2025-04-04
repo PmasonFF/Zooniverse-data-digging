@@ -19,7 +19,9 @@ import line_scan
 import wordcan
 
 """
-Version 0.1.2
+Version 0.2.1
+0.2.1 - width_to_line_ratio shortform from -s to -r
+0.2.0 - ensure output files with limit parameters are valid file names
 0.1.2 - raw docstring to remove syntax warning re '/p' line 618
 0.1.1 - version with peel end groups, lcs, and remove outliers
         Currently set for maximum display of all differences, 
@@ -73,8 +75,8 @@ def clean_and_decorate(text):
     return text.replace('\n', ''). \
         replace('[deletion]', '˄').replace('[/deletion]', '˄'). \
         replace('[insertion]', '˅').replace('[/insertion]', '˅'). \
-        replace('[unclear]', '‽').replace('[/unclear]', '‽').\
-        replace('[underline]', 'µ').replace('[/underline]', 'µ').\
+        replace('[unclear]', '‽').replace('[/unclear]', '‽'). \
+        replace('[underline]', 'µ').replace('[/underline]', 'µ'). \
         replace('[Underline]', 'µ').replace('[/Underline]', 'µ').strip(' ')
 
 
@@ -681,7 +683,7 @@ if __name__ == '__main__':
         to right for each page.  example: "-p single" """))
 
     parser.add_argument(
-        '-s', '--width_to_line_ratio', default=26,
+        '-r', '--width_to_line_ratio', default=26,
         help=textwrap.dedent("""This parameter is used to adjust the clustering of drawn lines
         to aggregate correlated text.  This value may vary from register to register depending 
         on the typeset, hand writing, paper or journal size, and how the material was scanned.
@@ -695,7 +697,7 @@ if __name__ == '__main__':
         require a larger number.  Scans which are narrower in width relative to the line height 
         need smaller number.  Text that is spread out in width relative to line height need a 
         larger number.                         
-        example: "-s 40" """))
+        example: "-r 40" """))
 
     args = parser.parse_args()
     directory = args.directory
@@ -746,10 +748,13 @@ if __name__ == '__main__':
 
     page = args.pagination  # get preferred pagination type
 
+    clean_filename_table = dict((ord(char), '_') for char in r'<>:"/\|?*')
+    clean_limits = raw_limits.translate(clean_filename_table)
+
     # Script settings and file locations:
-    unsorted_location = subject_extracts[:-4] + '_flattened.csv'
-    sorted_location = subject_extracts[:-4] + '_' + raw_limits + '_sorted.csv'
-    aggregated_location = subject_extracts[:-4] + '_aggregated.csv'
+    unsorted_location = subject_extracts[:-4] + '_' + clean_limits + '_flattened.csv'
+    sorted_location = subject_extracts[:-4] + '_' + clean_limits + '_sorted.csv'
+    aggregated_location = subject_extracts[:-4] + '_' + clean_limits + '_aggregated.csv'
     metadata_x_ref = load_metadata_x_ref(metadata_crossreference)
 
     print(flatten_class(subject_extracts, unsorted_location, sub_limits, group_ids))
@@ -757,4 +762,5 @@ if __name__ == '__main__':
     print(aggregate(sorted_location, aggregated_location))
 
     print(natsort_double(aggregated_location, subject_extracts[:-4] + '_'
-                         + raw_limits + '_reconciled.csv', 2, 1, False, True))
+                         + clean_limits + '_reconciled.csv', 2, 1, False, True))
+
