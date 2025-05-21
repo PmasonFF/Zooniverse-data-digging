@@ -3,14 +3,13 @@ import sys
 import json
 import dbscan
 
-csv.field_size_limit(sys.maxsize)
 # set up the file locations (user specific)
 location = r'C:\py\Data_digging\sorted_flattened-points_demo.csv'
 locationselect = r'C:\py\Data_digging\aggregate_drawing_demo.csv'
 
 
 def process_aggregation(subj, image, clas, ep, min_point, h_palms, flowring, leafles):
-    if clas > 10:  # test for a minimum of 10 valid clssifications       
+    if clas > 10:  # test for a minimum of 10 valid classifications       
         scanh = dbscan.DBSCAN(ep, min_point)
         scanh.cluster(h_palms)
         hc_p = json.dumps(scanh.points)
