@@ -8,8 +8,6 @@ import csv
 import sys
 import json
 
-csv.field_size_limit(sys.maxsize)
-
 # set up the file locations (user specific) - There needs to be a input file and the aggregated
 # out put file.  The input file is assumed to be sorted on the field we want to aggregate over.
 location = r'C:\py\Data_digging\sorted_flattened-points.csv'
@@ -23,14 +21,14 @@ outlocation = r'C:\py\Data_digging\aggregate.csv'
 # compare that to the average of the same field for other subjects which have not yet been aggregated.
 
 
-f process_aggregation(subj, cl_counter, other_fields, aggregated_bin_1, aggregated_bin_2, aggregated_bin_3):
+def process_aggregation(subj, cl_counter, other_field_, aggregated_bin_1, aggregated_bin_2, aggregated_bin_3):
     # process the aggregated data for a subject.  The input variables are the function parameters and
     # the out_put can be any consistent function of those variables.  Typical processing should include
     # verifying enough (some_limit) valid classifications were aggregated (even though all subjects may be 
     # retired, there may be cases not all the classifications are valid. Other processing could include 
     # clustering drawing points, calculating vote fractions, applying a Bayesian pipeline, or simply
     # modifying the order or presentation format of the aggregate data.
-    if cl_counter > some_limit: 
+    if cl_counter > 10:  # some limit for the minimum number of valid classifications
         out_put_1 = []
         out_put_2 = 0
         out_put_3 = []
@@ -39,7 +37,7 @@ f process_aggregation(subj, cl_counter, other_fields, aggregated_bin_1, aggregat
         # make the data as useful as possible. They must match the fieldnames in the section below - both
         # in order and spelling.
         new_row = {'subject_ids': subj, 'classifications': cl_counter,
-                   'Other field passed through from the classification file': other_fields,
+                   'Other field passed through from the classification file': other_field_,
                    'agregated_bin_and_processed_field_1': out_put_1,
                    'agregated_bin_and_processed_field_2': out_put_2,
                    'agregated_bin_and_processed_field_3': out_put_3
@@ -47,7 +45,7 @@ f process_aggregation(subj, cl_counter, other_fields, aggregated_bin_1, aggregat
         writer.writerow(new_row)
         return True
     else:
-        return False
+        return False  # or other action when there was not enough classifications
 
 
 # set up the output file names for the aggregated and processed data, and write the header.  The
