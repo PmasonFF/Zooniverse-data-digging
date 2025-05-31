@@ -1,5 +1,3 @@
-""" This version is written in Python 3.7"""
-
 import os
 import io
 from PIL import Image
@@ -14,7 +12,7 @@ def compress(original_location, original_file, resized_width):
     scale = float(resized_width) / width
     scaled_size = (resized_width, int(height * scale))
     #  resize the image
-    resized_file = orig_image.resize(scaled_size, Image.ANTIALIAS)
+    resized_file = orig_image.resize(scaled_size, Image.Resampling.LANCZOS)
     #  save it in a file-like object (in memory) and find the size
     file_bytes = io.BytesIO()
     resized_file.save(file_bytes, optimize=True, quality=100, format='jpeg')
@@ -28,7 +26,7 @@ def compress(original_location, original_file, resized_width):
 #  connect to zoniverse - requires the User_name and Password to be set up as environmental variables in your OS
 Panoptes.connect(username=os.environ['User_name'], password=os.environ['Password'])
 #  modify the project slug if used for other than Snapshots at Sea
-project = Project.find(slug='tedcheese/snapshots-at-sea')
+project = Project.find(slug='pmason/fossiltrainer')
 
 
 while True:
@@ -92,7 +90,7 @@ for filename, metadata in subject_metadata.items():
             subject.save()
             subject_set.add(subject.id)
             new_subjects += 1
-    except panoptes_client.panoptes.PanoptesAPIException:
+    except (panoptes_client.panoptes.PanoptesAPIException, OSError):
         print('An error occurred during the upload of ', filename)
 print(new_subjects, 'new subjects created and uploaded')
 print('Uploading complete, Please wait while the full subject listing is prepared and saved in')
