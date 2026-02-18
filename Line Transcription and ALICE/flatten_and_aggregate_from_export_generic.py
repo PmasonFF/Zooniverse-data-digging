@@ -299,7 +299,7 @@ def check_outlier(grp_):
                 similarity_[i, j] = fuzz.ratio(grp_[i].replace(' ', ''), grp_[j].replace(' ', '')) / 100
                 similarity_[j, i] = similarity_[i, j]
 
-     for i in range(0, len(grp_)):
+    for i in range(0, len(grp_)):
         if np.sum(similarity_[i] == 1.0) > max_ones:
             max_ones = np.sum(similarity_[i] == 1.0)
             max_ones_id = i
@@ -752,4 +752,5 @@ if __name__ == '__main__':
     print(natsort_double(aggregated_location, workflow_data[:-4] +
                          '_' + clean_limits + '_reconciled.csv', 2, 1, False, True))
     print(f"aggregated and processed {toc - tic:0.2f} seconds")
+
 
