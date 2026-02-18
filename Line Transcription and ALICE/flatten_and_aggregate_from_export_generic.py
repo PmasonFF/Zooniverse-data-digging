@@ -19,7 +19,9 @@ import line_scan
 import wordcan
 
 """
-Version 0.2.1
+Version 0.3.0
+
+0.3.0 - modify peel_common_end_groups, peel_longest_common_substring for len(grp_)==2
 0.2.1 - width_to_line_ratio shortform from -s to -r
 0.2.0 - ensure output files with limit parameters are valid file names
 0.1.1 - raw docstring to remove syntax warning re '/p' line 613
@@ -297,9 +299,9 @@ def check_outlier(grp_):
                 similarity_[i, j] = fuzz.ratio(grp_[i].replace(' ', ''), grp_[j].replace(' ', '')) / 100
                 similarity_[j, i] = similarity_[i, j]
 
-    for i in range(0, len(grp_)):
-        if (similarity_[i] == 1.0).sum() > max_ones:
-            max_ones = (similarity_[i] == 1.0).sum()
+     for i in range(0, len(grp_)):
+        if np.sum(similarity_[i] == 1.0) > max_ones:
+            max_ones = np.sum(similarity_[i] == 1.0)
             max_ones_id = i
 
         acceptable_match = 0
@@ -342,20 +344,16 @@ def common_finish(sa, sb):
 
 def peel_common_end_groups(grp_):
     # peel off common start
-    s, start = common_start(grp_[0], grp_[1])
-    if len(grp_) == 2:
-        grp_ = [grp_[0][s:], grp_[1][s:]]
-    for index in range(2, len(grp_)):
+    s, start = 0, grp_[0]
+    for index in range(1, len(grp_)):
         s, start = common_start(grp_[index], start)
     if s > 0:
         grp_ = [gr[s:] for gr in grp_]
     else:
         start = ''
     # peel off common finish
-    f, finish = common_finish(grp_[0], grp_[1])
-    if len(grp_) == 2:
-        grp_ = [grp_[0][:-f], grp_[1][:-f]]
-    for index in range(2, len(grp_)):
+    f, finish = 0, grp_[0]
+    for index in range(1, len(grp_)):
         f, finish = common_finish(grp_[index], finish)
     if f > 0:
         grp_ = [gr[: -f] for gr in grp_]
@@ -389,32 +387,28 @@ def longest_common_substr(s1, s2):
 
 
 def peel_longest_common_substring(snip):
-    start, end, lcs = longest_common_substr(snip[0], snip[1])
-    if end - start > 2:
-        if len(snip) == 2:
-            snip_before = [snip[0][:start], snip[1][:start]]
-            snip_after = [snip[0][end:], snip[0][end:]]
-            return [snip_before, lcs, snip_after]
-        else:
-            for index in range(2, len(snip)):
-                start, end, lcs = longest_common_substr(snip[index], lcs)
-            if end - start > 2:
-                snip_before = []
-                snip_after = []
-                for gr in snip:
-                    if (gr.split(lcs))[0]:
-                        snip_before.append((gr.split(lcs))[0])
-                    else:
-                        snip_before.append('ø')
-                    if (gr.split(lcs))[1]:
-                        snip_after.append((gr.split(lcs))[1])
-                    else:
-                        snip_after.append('ø')
-                return [snip_before, lcs, snip_after]
+    lcs = snip[0]
+    end = 0
+    start = 0
+    for index in range(1, len(snip)):
+        start, end, lcs = longest_common_substr(snip[index], lcs)
+    if end - start >= 2:
+        snip_before = []
+        snip_after = []
+        for gr in snip:
+            part = gr.partition(lcs)
+            if part[0]:
+                snip_before.append(part[0])
             else:
-                return snip
-    return snip
-
+                snip_before.append('ø')
+            if part[2]:
+                snip_after.append(part[2])
+            else:
+                snip_after.append('ø')
+        return [snip_before, lcs, snip_after]
+    else:
+        return snip
+            
 
 def reconcile_and_assemble(sorted_grp_trans):
     full_reconciled_text = ''
@@ -758,3 +752,4 @@ if __name__ == '__main__':
     print(natsort_double(aggregated_location, workflow_data[:-4] +
                          '_' + clean_limits + '_reconciled.csv', 2, 1, False, True))
     print(f"aggregated and processed {toc - tic:0.2f} seconds")
+
